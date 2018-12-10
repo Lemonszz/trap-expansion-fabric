@@ -15,28 +15,19 @@ import static party.lemons.trapexpansion.TrapExpansion.MODID;
 
 public class TrapExpansionBlocks
 {
-	public static final Block SLIPPERY_STONE;
-	public static final Block SPIKE_TRAP;
-	public static final Block SPIKE_TRAP_WALL;
-	public static final Block FAN;
-	public static final Block DETECTOR;
+	public static Block SLIPPERY_STONE;
+	public static Block SPIKE_TRAP;
+	public static Block SPIKE_TRAP_WALL;
+	public static Block FAN;
+	public static Block DETECTOR;
 
-	public static final BlockEntityType<FanBlockEntity> FAN_BE;
-	public static final BlockEntityType<DetectorBlockEntity> DETECTOR_BE;
-
-	static
+	public static void init()
 	{
-
 		SLIPPERY_STONE = registerBlock(new SpiderProofBlock(Block.Settings.create(Material.STONE).setStrength(0.5F, 1.5F)), "slippery_stone");
 		SPIKE_TRAP = registerBlock(new SpikeTrapFloorBlock(Block.Settings.create(Material.ANVIL).setStrength(0.5F, 1.5F)), "spike_trap");
 		SPIKE_TRAP_WALL = registerBlock(new SpikeTrapWallBlock(Block.Settings.create(Material.ANVIL).setStrength(0.5F, 1.5F).copyDropTable(SPIKE_TRAP)), "spike_trap_wall", false);
 		FAN = registerBlock( new FanBlock(Block.Settings.create(Material.STONE).setStrength(0.5F, 1.5F)), "fan");
 		DETECTOR = registerBlock(new DetectorBlock(Block.Settings.create(Material.STONE).setStrength(0.5F, 1.5F)), "detector");
-
-		//TODO: move these somewhere else
-		//TODO: create method for easy registration
-		FAN_BE = Registry.register(Registry.BLOCK_ENTITIES, MODID + ":" + "fan", BlockEntityType.Builder.create(FanBlockEntity::new).method_11034(null));
-		DETECTOR_BE = Registry.register(Registry.BLOCK_ENTITIES, MODID + ":" + "detector", BlockEntityType.Builder.create(DetectorBlockEntity::new).method_11034(null));
 	}
 
 	private static Block registerBlock(Block block, String name)
@@ -56,8 +47,4 @@ public class TrapExpansionBlocks
 		}
 		return block;
 	}
-
-	//Force static stuff to be initialized
-	//TODO: probably don't do everything statically :^)
-	public static void init(){}
 }

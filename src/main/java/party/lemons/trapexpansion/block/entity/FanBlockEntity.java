@@ -1,6 +1,7 @@
 package party.lemons.trapexpansion.block.entity;
 
 import party.lemons.trapexpansion.block.FanBlock;
+import party.lemons.trapexpansion.init.TrapExpansionBlockEntities;
 import party.lemons.trapexpansion.init.TrapExpansionBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -20,7 +21,7 @@ public class FanBlockEntity extends BlockEntity implements Tickable
 
 	public FanBlockEntity()
 	{
-		super(TrapExpansionBlocks.FAN_BE);
+		super(TrapExpansionBlockEntities.FAN_BE);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package party.lemons.trapexpansion.block.entity;
 
 import party.lemons.trapexpansion.block.DetectorBlock;
+import party.lemons.trapexpansion.init.TrapExpansionBlockEntities;
 import party.lemons.trapexpansion.init.TrapExpansionBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -19,7 +20,7 @@ public class DetectorBlockEntity extends BlockEntity implements Tickable
 
 	public DetectorBlockEntity()
 	{
-		super(TrapExpansionBlocks.DETECTOR_BE);
+		super(TrapExpansionBlockEntities.DETECTOR_BE);
 	}
 
 
