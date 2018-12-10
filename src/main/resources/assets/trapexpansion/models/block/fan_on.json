@@ -1,0 +1,8 @@
+{
+  "parent": "block/orientable",
+  "textures": {
+    "top": "block/furnace_top",
+    "side": "block/furnace_top",
+    "front":"trapexpansion:block/fan_front_on"
+  }
+}
