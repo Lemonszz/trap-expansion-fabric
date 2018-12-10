@@ -17,9 +17,9 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class BlockSpiderProof extends Block
+public class SpiderProofBlock extends Block
 {
-	public BlockSpiderProof(Settings settings)
+	public SpiderProofBlock(Settings settings)
 	{
 		super(settings);
 	}

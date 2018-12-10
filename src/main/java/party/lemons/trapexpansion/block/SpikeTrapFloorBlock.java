@@ -2,7 +2,7 @@ package party.lemons.trapexpansion.block;
 
 import party.lemons.trapexpansion.init.TrapExpansionBlocks;
 import party.lemons.trapexpansion.init.TrapExpansionSounds;
-import party.lemons.trapexpansion.misc.DamageSourceSpike;
+import party.lemons.trapexpansion.misc.SpikeDamageSource;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Random;
 
-public class BlockSpikeTrapVertical extends Block
+public class SpikeTrapFloorBlock extends Block
 {
 	protected static final VoxelShapeContainer AABB_UP = VoxelShapes.cube(0.0D, 0.0D, 0.0D, 1.0D, 0.1D, 1.0D);
 	protected static final VoxelShapeContainer AABB_DOWN =  VoxelShapes.cube(0.0D, 0.9D, 0.0D, 1.0D, 1.0D, 1.0D);
@@ -38,13 +38,13 @@ public class BlockSpikeTrapVertical extends Block
 	public static final FacingProperty DIRECTION = FacingProperty.create("direction", f->f.getAxis().isVertical());
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
-	public BlockSpikeTrapVertical(Settings settings)
+	public SpikeTrapFloorBlock(Settings settings)
 	{
 		super(settings);
 		this.setDefaultState(this.stateFactory.getDefaultState().with(OUT, 0).with(DIRECTION, Facing.UP).with(WATERLOGGED, false));
 	}
 
-	public BlockSpikeTrapVertical(Settings settings, boolean child)
+	public SpikeTrapFloorBlock(Settings settings, boolean child)
 	{
 		super(settings);
 	}
@@ -77,7 +77,7 @@ public class BlockSpikeTrapVertical extends Block
 
 			if(i == 2 && world.getTime() % 5 == 0)
 			{
-				entity.damage(DamageSourceSpike.SPIKE, 3);
+				entity.damage(SpikeDamageSource.SPIKE, 3);
 			}
 
 		}
@@ -148,7 +148,7 @@ public class BlockSpikeTrapVertical extends Block
 			case SOUTH:
 			case WEST:
 			case EAST:
-				return TrapExpansionBlocks.SPIKE_TRAP_WALL.getDefaultState().with(BlockSpikeTrapWall.DIRECTION_WALL, ctx.getFacing()).with(WATERLOGGED, isWater);
+				return TrapExpansionBlocks.SPIKE_TRAP_WALL.getDefaultState().with(SpikeTrapWallBlock.DIRECTION_WALL, ctx.getFacing()).with(WATERLOGGED, isWater);
 		}
 
 		return this.getDefaultState().with(WATERLOGGED, isWater);

@@ -1,8 +1,8 @@
 package party.lemons.trapexpansion.init;
 
 import party.lemons.trapexpansion.block.*;
-import party.lemons.trapexpansion.block.entity.BlockEntityDetector;
-import party.lemons.trapexpansion.block.entity.BlockEntityFan;
+import party.lemons.trapexpansion.block.entity.DetectorBlockEntity;
+import party.lemons.trapexpansion.block.entity.FanBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
@@ -21,21 +21,22 @@ public class TrapExpansionBlocks
 	public static final Block FAN;
 	public static final Block DETECTOR;
 
-	public static final BlockEntityType<BlockEntityFan> FAN_BE;
-	public static final BlockEntityType<BlockEntityDetector> DETECTOR_BE;
+	public static final BlockEntityType<FanBlockEntity> FAN_BE;
+	public static final BlockEntityType<DetectorBlockEntity> DETECTOR_BE;
 
 	static
 	{
-		SLIPPERY_STONE = registerBlock(new BlockSpiderProof(Block.Settings.create(Material.STONE).setStrength(0.5F, 1.5F)), "slippery_stone");
-		SPIKE_TRAP = registerBlock(new BlockSpikeTrapVertical(Block.Settings.create(Material.ANVIL).setStrength(0.5F, 1.5F)), "spike_trap");
-		SPIKE_TRAP_WALL = registerBlock(new BlockSpikeTrapWall(Block.Settings.create(Material.ANVIL).setStrength(0.5F, 1.5F).copyDropTable(SPIKE_TRAP)), "spike_trap_wall", false);
-		FAN = registerBlock( new BlockFan(Block.Settings.create(Material.STONE).setStrength(0.5F, 1.5F)), "fan");
-		DETECTOR = registerBlock(new BlockDetector(Block.Settings.create(Material.STONE).setStrength(0.5F, 1.5F)), "detector");
+
+		SLIPPERY_STONE = registerBlock(new SpiderProofBlock(Block.Settings.create(Material.STONE).setStrength(0.5F, 1.5F)), "slippery_stone");
+		SPIKE_TRAP = registerBlock(new SpikeTrapFloorBlock(Block.Settings.create(Material.ANVIL).setStrength(0.5F, 1.5F)), "spike_trap");
+		SPIKE_TRAP_WALL = registerBlock(new SpikeTrapWallBlock(Block.Settings.create(Material.ANVIL).setStrength(0.5F, 1.5F).copyDropTable(SPIKE_TRAP)), "spike_trap_wall", false);
+		FAN = registerBlock( new FanBlock(Block.Settings.create(Material.STONE).setStrength(0.5F, 1.5F)), "fan");
+		DETECTOR = registerBlock(new DetectorBlock(Block.Settings.create(Material.STONE).setStrength(0.5F, 1.5F)), "detector");
 
 		//TODO: move these somewhere else
 		//TODO: create method for easy registration
-		FAN_BE = Registry.register(Registry.BLOCK_ENTITIES, MODID + ":" + "fan", BlockEntityType.Builder.create(BlockEntityFan::new).method_11034(null));
-		DETECTOR_BE = Registry.register(Registry.BLOCK_ENTITIES, MODID + ":" + "detector", BlockEntityType.Builder.create(BlockEntityDetector::new).method_11034(null));
+		FAN_BE = Registry.register(Registry.BLOCK_ENTITIES, MODID + ":" + "fan", BlockEntityType.Builder.create(FanBlockEntity::new).method_11034(null));
+		DETECTOR_BE = Registry.register(Registry.BLOCK_ENTITIES, MODID + ":" + "detector", BlockEntityType.Builder.create(DetectorBlockEntity::new).method_11034(null));
 	}
 
 	private static Block registerBlock(Block block, String name)

@@ -1,6 +1,6 @@
 package party.lemons.trapexpansion.block.entity;
 
-import party.lemons.trapexpansion.block.BlockDetector;
+import party.lemons.trapexpansion.block.DetectorBlock;
 import party.lemons.trapexpansion.init.TrapExpansionBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -12,12 +12,12 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
 
-public class BlockEntityDetector extends BlockEntity implements Tickable
+public class DetectorBlockEntity extends BlockEntity implements Tickable
 {
 	private static final int STEP_TIME = 4;
 	private static final int RANGE = 5;
 
-	public BlockEntityDetector()
+	public DetectorBlockEntity()
 	{
 		super(TrapExpansionBlocks.DETECTOR_BE);
 	}
@@ -30,10 +30,10 @@ public class BlockEntityDetector extends BlockEntity implements Tickable
 		{
 			BlockState state = world.getBlockState(pos);
 
-			if(!(state.getBlock() instanceof BlockDetector))
+			if(!(state.getBlock() instanceof DetectorBlock))
 				return;
 
-			Facing facing = state.get(BlockDetector.FACING);
+			Facing facing = state.get(DetectorBlock.FACING);
 			BoundingBox bb = new BoundingBox(0, 0, 0, 1, 1, 1).offset(pos.offset(facing)).expand(facing.getOffsetX() * RANGE, facing.getOffsetY() * RANGE, facing.getOffsetZ() * RANGE);
 			List<Entity> entities = world.getEntities(Entity.class, bb, e->true);
 
@@ -65,11 +65,11 @@ public class BlockEntityDetector extends BlockEntity implements Tickable
 				}
 			}
 
-			boolean powered = state.get(BlockDetector.POWERED);
+			boolean powered = state.get(DetectorBlock.POWERED);
 
 			if(powered != hasEntity)
 			{
-				world.setBlockState(pos, state.with(BlockDetector.POWERED, hasEntity));
+				world.setBlockState(pos, state.with(DetectorBlock.POWERED, hasEntity));
 			}
 		}
 	}

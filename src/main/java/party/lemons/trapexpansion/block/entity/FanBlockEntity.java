@@ -1,6 +1,6 @@
 package party.lemons.trapexpansion.block.entity;
 
-import party.lemons.trapexpansion.block.BlockFan;
+import party.lemons.trapexpansion.block.FanBlock;
 import party.lemons.trapexpansion.init.TrapExpansionBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -12,13 +12,13 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
 
-public class BlockEntityFan extends BlockEntity implements Tickable
+public class FanBlockEntity extends BlockEntity implements Tickable
 {
 	private static final int STEP_TIME = 1;
 	private static final float SPEED = 1F;
 	private static final float RANGE = 8F;
 
-	public BlockEntityFan()
+	public FanBlockEntity()
 	{
 		super(TrapExpansionBlocks.FAN_BE);
 	}
@@ -30,13 +30,13 @@ public class BlockEntityFan extends BlockEntity implements Tickable
 		{
 			BlockState state = world.getBlockState(pos);
 
-			if(!(state.getBlock() instanceof BlockFan))
+			if(!(state.getBlock() instanceof FanBlock))
 				return;
 
-			if(!state.get(BlockFan.POWERED))
+			if(!state.get(FanBlock.POWERED))
 				return;
 
-			Facing facing = state.get(BlockFan.FACING);
+			Facing facing = state.get(FanBlock.FACING);
 
 			BoundingBox bb = new BoundingBox(0, 0, 0, 1, 1, 1).offset(pos.offset(facing)).expand(facing.getOffsetX() * RANGE, facing.getOffsetY() * RANGE, facing.getOffsetZ() * RANGE);
 			List<Entity> entities = world.getEntities(Entity.class, bb, e->true);

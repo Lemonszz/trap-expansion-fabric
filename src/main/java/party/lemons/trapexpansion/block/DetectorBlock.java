@@ -1,6 +1,6 @@
 package party.lemons.trapexpansion.block;
 
-import party.lemons.trapexpansion.block.entity.BlockEntityDetector;
+import party.lemons.trapexpansion.block.entity.DetectorBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
@@ -15,12 +15,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Facing;
 import net.minecraft.world.BlockView;
 
-public class BlockDetector extends BlockWithEntity
+public class DetectorBlock extends BlockWithEntity
 {
 	public static final BooleanProperty POWERED = Properties.POWERED;
 	public static final FacingProperty FACING = Properties.FACING;
 
-	public BlockDetector(Settings var1)
+	public DetectorBlock(Settings var1)
 	{
 		super(var1);
 	}
@@ -28,7 +28,7 @@ public class BlockDetector extends BlockWithEntity
 	@Override
 	public BlockEntity createBlockEntity(BlockView var1)
 	{
-		return new BlockEntityDetector();
+		return new DetectorBlockEntity();
 	}
 
 	@Override

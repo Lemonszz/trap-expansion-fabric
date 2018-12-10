@@ -2,7 +2,7 @@ package party.lemons.trapexpansion.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import party.lemons.trapexpansion.block.entity.BlockEntityFan;
+import party.lemons.trapexpansion.block.entity.FanBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemPlacementContext;
@@ -18,12 +18,12 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockFan extends BlockWithEntity
+public class FanBlock extends BlockWithEntity
 {
 	public static final BooleanProperty POWERED = Properties.POWERED;
 	public static final FacingProperty FACING = Properties.FACING;
 
-	public BlockFan(Settings settings)
+	public FanBlock(Settings settings)
 	{
 		super(settings);
 		this.setDefaultState(this.stateFactory.getDefaultState().with(POWERED, false).with(FACING, Facing.SOUTH));
@@ -100,6 +100,6 @@ public class BlockFan extends BlockWithEntity
 	@Override
 	public BlockEntity createBlockEntity(BlockView world)
 	{
-		return new BlockEntityFan();
+		return new FanBlockEntity();
 	}
 }

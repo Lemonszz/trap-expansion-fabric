@@ -10,7 +10,7 @@ import net.minecraft.util.shape.VoxelShapeContainer;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 
-public class BlockSpikeTrapWall extends BlockSpikeTrapVertical
+public class SpikeTrapWallBlock extends SpikeTrapFloorBlock
 {
 	protected static final VoxelShapeContainer AABB_NORTH = VoxelShapes.cube(0.0D, 0.0D, 1.0D, 1.0D, 1.0D, 0.9D);
 	protected static final VoxelShapeContainer AABB_SOUTH = VoxelShapes.cube(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.1D);
@@ -19,7 +19,7 @@ public class BlockSpikeTrapWall extends BlockSpikeTrapVertical
 
 	public static final FacingProperty DIRECTION_WALL = FacingProperty.create("direction", f->f.getAxis().isHorizontal());
 
-	public BlockSpikeTrapWall(Settings settings)
+	public SpikeTrapWallBlock(Settings settings)
 	{
 		super(settings, true);
 		this.setDefaultState(this.stateFactory.getDefaultState().with(OUT, 0).with(DIRECTION_WALL, Facing.NORTH));
