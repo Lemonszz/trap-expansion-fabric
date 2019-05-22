@@ -1,5 +1,10 @@
 package party.lemons.trapexpansion.block;
 
+import net.minecraft.entity.EntityContext;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
 import party.lemons.trapexpansion.init.TrapExpansionBlocks;
 import party.lemons.trapexpansion.init.TrapExpansionSounds;
 import party.lemons.trapexpansion.misc.SpikeDamageSource;
@@ -9,17 +14,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.sound.Sound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateFactory;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.FacingProperty;
 import net.minecraft.state.property.IntegerProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BoundingBox;
-import net.minecraft.util.math.Facing;
-import net.minecraft.util.shape.VoxelShapeContainer;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.IWorld;
@@ -31,17 +32,17 @@ import java.util.Random;
 
 public class SpikeTrapFloorBlock extends Block
 {
-	protected static final VoxelShapeContainer AABB_UP = VoxelShapes.cube(0.0D, 0.0D, 0.0D, 1.0D, 0.1D, 1.0D);
-	protected static final VoxelShapeContainer AABB_DOWN =  VoxelShapes.cube(0.0D, 0.9D, 0.0D, 1.0D, 1.0D, 1.0D);
+	protected static final VoxelShape AABB_UP = VoxelShapes.cuboid(0.0D, 0.0D, 0.0D, 1.0D, 0.1D, 1.0D);
+	protected static final VoxelShape AABB_DOWN =  VoxelShapes.cuboid(0.0D, 0.9D, 0.0D, 1.0D, 1.0D, 1.0D);
 
 	public static final IntegerProperty OUT = IntegerProperty.create("out", 0, 2);
-	public static final FacingProperty DIRECTION = FacingProperty.create("direction", f->f.getAxis().isVertical());
+	public static final DirectionProperty DIRECTION = DirectionProperty.create("direction", f->f.getAxis().isVertical());
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
 	public SpikeTrapFloorBlock(Settings settings)
 	{
 		super(settings);
-		this.setDefaultState(this.stateFactory.getDefaultState().with(OUT, 0).with(DIRECTION, Facing.UP).with(WATERLOGGED, false));
+		this.setDefaultState(this.stateFactory.getDefaultState().with(OUT, 0).with(DIRECTION, Direction.UP).with(WATERLOGGED, false));
 	}
 
 	public SpikeTrapFloorBlock(Settings settings, boolean child)
@@ -51,22 +52,22 @@ public class SpikeTrapFloorBlock extends Block
 
 	@Override
 	public FluidState getFluidState(BlockState var1) {
-		return var1.get(WATERLOGGED) ? Fluids.WATER.method_15729(false) : super.getFluidState(var1);
+		return var1.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(var1);
 	}
 
 	@Override
-	public BlockState getRenderingState(BlockState var1, Facing var2, BlockState var3, IWorld var4, BlockPos var5, BlockPos var6) {
+	public BlockState getStateForNeighborUpdate(BlockState var1, Direction var2, BlockState var3, IWorld var4, BlockPos var5, BlockPos var6) {
 		if (var1.get(WATERLOGGED)) {
-			var4.getFluidTickScheduler().schedule(var5, Fluids.WATER, Fluids.WATER.method_15789(var4));
+			var4.getFluidTickScheduler().schedule(var5, Fluids.WATER, Fluids.WATER.getTickRate(var4));
 		}
 
-		return super.getRenderingState(var1, var2, var3, var4, var5, var6);
+		return super.getStateForNeighborUpdate(var1, var2, var3, var4, var5, var6);
 	}
 
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity)
 	{
-		if(!world.isRemote && !entity.invalid)
+		if(!world.isClient && !entity.removed)
 		{
 			int i = state.get(OUT);
 
@@ -85,16 +86,16 @@ public class SpikeTrapFloorBlock extends Block
 
 	@Deprecated
 	@Override
-	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block var4, BlockPos var5)
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block var4, BlockPos var5, boolean var6)
 	{
 		world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
 	}
 
 	@Deprecated
 	@Override
-	public void scheduledTick(BlockState state, World world,  BlockPos pos, Random random)
+	public void onScheduledTick(BlockState state, World world,  BlockPos pos, Random random)
 	{
-		if (!world.isRemote)
+		if (!world.isClient)
 		{
 			int i = state.get(OUT);
 
@@ -107,7 +108,7 @@ public class SpikeTrapFloorBlock extends Block
 
 	@Deprecated
 	@Override
-	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState state2)
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState state2, boolean bool)
 	{
 		if(state.get(OUT) > 0 || world.isReceivingRedstonePower(pos))
 			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
@@ -120,8 +121,8 @@ public class SpikeTrapFloorBlock extends Block
 	}
 
 	@Override
-	public VoxelShapeContainer getBoundingShape(BlockState state, BlockView world, BlockPos pos) {
-		if(state.get(DIRECTION) == Facing.UP)
+	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, EntityContext context) {
+		if(state.get(DIRECTION) == Direction.UP)
 			return AABB_UP;
 
 		return AABB_DOWN;
@@ -135,11 +136,11 @@ public class SpikeTrapFloorBlock extends Block
 
 	public BlockState getPlacementState(ItemPlacementContext ctx)
 	{
-		FluidState fs = ctx.getWorld().getFluidState(ctx.getPos());
+		FluidState fs = ctx.getWorld().getFluidState(ctx.getBlockPos());
 		boolean isWater = fs.getFluid() == Fluids.WATER;
 
-		if(ctx.getFacing() == Facing.DOWN)
-			return this.getDefaultState().with(DIRECTION, Facing.DOWN).with(WATERLOGGED, isWater);
+		if(ctx.getFacing() == Direction.DOWN)
+			return this.getDefaultState().with(DIRECTION, Direction.DOWN).with(WATERLOGGED, isWater);
 
 
 		switch(ctx.getFacing())
@@ -184,15 +185,15 @@ public class SpikeTrapFloorBlock extends Block
 		if(change != 0)
 		{
 
-			Sound sound = TrapExpansionSounds.SOUND_SPIKE_1;
+			SoundEvent sound = TrapExpansionSounds.SOUND_SPIKE_1;
 			if(endValue == 2)
 				sound = TrapExpansionSounds.SOUND_SPIKE_2;
 
-			world.playSound(null, pos, sound, SoundCategory.BLOCK, 1F, 0.5F + (world.random.nextFloat() / 2));
+			world.playSound(null, pos, sound, SoundCategory.BLOCKS, 1F, 0.5F + (world.random.nextFloat() / 2));
 		}
 
 		world.setBlockState(pos, state.with(OUT, endValue));
-		world.method_16109(pos);
+		world.scheduleBlockRender(pos);
 		if(endValue != 2 || !powered)
 			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
 	}
@@ -216,7 +217,7 @@ public class SpikeTrapFloorBlock extends Block
 
 	@Override
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> st) {
-		st.with(OUT).with(DIRECTION).with(WATERLOGGED);
+		st.add(OUT).add(DIRECTION).add(WATERLOGGED);
 	}
 
 }

@@ -1,14 +1,14 @@
 package party.lemons.trapexpansion.block.entity;
 
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import party.lemons.trapexpansion.block.FanBlock;
 import party.lemons.trapexpansion.init.TrapExpansionBlockEntities;
-import party.lemons.trapexpansion.init.TrapExpansionBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BoundingBox;
-import net.minecraft.util.math.Facing;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public class FanBlockEntity extends BlockEntity implements Tickable
 			if(!state.get(FanBlock.POWERED))
 				return;
 
-			Facing facing = state.get(FanBlock.FACING);
+			Direction facing = state.get(FanBlock.FACING);
 
 			BoundingBox bb = new BoundingBox(0, 0, 0, 1, 1, 1).offset(pos.offset(facing)).expand(facing.getOffsetX() * RANGE, facing.getOffsetY() * RANGE, facing.getOffsetZ() * RANGE);
 			List<Entity> entities = world.getEntities(Entity.class, bb, e->true);
@@ -58,24 +58,17 @@ public class FanBlockEntity extends BlockEntity implements Tickable
 					}
 				}
 
-				double distance = e.getPos().distanceTo(pos.getX(), pos.getY(), pos.getZ());
+				double distance = e.getPos().distanceTo(new Vec3d(pos));
 				float distanceDecay =  Math.max(0, (float) ((RANGE - distance) / (RANGE * 8)));
 				float speed = SPEED;
-				if(facing == Facing.UP || facing == Facing.DOWN)
+				if(facing == Direction.UP || facing == Direction.DOWN)
 					speed += 1;
 
 				float velX = speed * (facing.getOffsetX() * distanceDecay);
 				float velY = speed * (facing.getOffsetY() * distanceDecay);
 				float velZ = speed * (facing.getOffsetZ() * distanceDecay);
 
-				if(velX != 0)
-					e.velocityX += velX;
-
-				if(velY != 0)
-					e.velocityY += velY;
-
-				if(velZ != 0)
-					e.velocityZ += velZ;
+				e.addVelocity(velX,velY,velZ);
 
 				e.fallDistance = Math.max(0, e.fallDistance - 1);
 			}

@@ -1,24 +1,24 @@
 package party.lemons.trapexpansion.block;
 
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.util.math.Direction;
 import party.lemons.trapexpansion.block.entity.DetectorBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
-import net.minecraft.block.RenderTypeBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateFactory;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.FacingProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Facing;
 import net.minecraft.world.BlockView;
 
 public class DetectorBlock extends BlockWithEntity
 {
 	public static final BooleanProperty POWERED = Properties.POWERED;
-	public static final FacingProperty FACING = Properties.FACING;
+	public static final DirectionProperty FACING = Properties.FACING;
 
 	public DetectorBlock(Settings var1)
 	{
@@ -38,15 +38,15 @@ public class DetectorBlock extends BlockWithEntity
 	}
 
 	@Override
-	public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Facing facing)
+	public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction)
 	{
-		return state.getWeakRedstonePower(world, pos, facing);
+		return state.getWeakRedstonePower(world, pos, direction);
 	}
 
 	@Override
-	public int getWeakRedstonePower(BlockState state, BlockView blockView, BlockPos pos, Facing facing)
+	public int getWeakRedstonePower(BlockState state, BlockView blockView, BlockPos pos, Direction direction)
 	{
-		return state.get(POWERED).booleanValue() && state.get(FACING) == facing ? 15 : 0;
+		return state.get(POWERED).booleanValue() && state.get(FACING) == direction ? 15 : 0;
 	}
 
 
@@ -65,11 +65,11 @@ public class DetectorBlock extends BlockWithEntity
 	@Override
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> st)
 	{
-		st.with(FACING).with(POWERED);
+		st.add(FACING).add(POWERED);
 	}
 
 	@Override
-	public RenderTypeBlock getRenderType(BlockState var1) {
-		return RenderTypeBlock.MODEL;
+	public BlockRenderType getRenderType(BlockState var1) {
+		return BlockRenderType.MODEL;
 	}
 }

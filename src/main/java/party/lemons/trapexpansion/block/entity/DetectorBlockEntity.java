@@ -1,14 +1,13 @@
 package party.lemons.trapexpansion.block.entity;
 
+import net.minecraft.util.math.Direction;
 import party.lemons.trapexpansion.block.DetectorBlock;
 import party.lemons.trapexpansion.init.TrapExpansionBlockEntities;
-import party.lemons.trapexpansion.init.TrapExpansionBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BoundingBox;
-import net.minecraft.util.math.Facing;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
@@ -27,14 +26,14 @@ public class DetectorBlockEntity extends BlockEntity implements Tickable
 	@Override
 	public void tick()
 	{
-		if(world.getTime() % STEP_TIME == 0 && !world.isRemote)
+		if(world.getTime() % STEP_TIME == 0 && !world.isClient)
 		{
 			BlockState state = world.getBlockState(pos);
 
 			if(!(state.getBlock() instanceof DetectorBlock))
 				return;
 
-			Facing facing = state.get(DetectorBlock.FACING);
+			Direction facing = state.get(DetectorBlock.FACING);
 			BoundingBox bb = new BoundingBox(0, 0, 0, 1, 1, 1).offset(pos.offset(facing)).expand(facing.getOffsetX() * RANGE, facing.getOffsetY() * RANGE, facing.getOffsetZ() * RANGE);
 			List<Entity> entities = world.getEntities(Entity.class, bb, e->true);
 
