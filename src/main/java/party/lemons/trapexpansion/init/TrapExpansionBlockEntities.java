@@ -1,5 +1,6 @@
 package party.lemons.trapexpansion.init;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.registry.Registry;
@@ -18,12 +19,12 @@ public class TrapExpansionBlockEntities
 
 	public static void init()
 	{
-		FAN_BE = registerBlockEntityType("fan", FanBlockEntity::new);
-		DETECTOR_BE = registerBlockEntityType("detector", DetectorBlockEntity::new);
+		FAN_BE = registerBlockEntityType("fan", FanBlockEntity::new, TrapExpansionBlocks.FAN);
+		DETECTOR_BE = registerBlockEntityType("detector", DetectorBlockEntity::new, TrapExpansionBlocks.DETECTOR);
 	}
 
-	public static BlockEntityType registerBlockEntityType(String name, Supplier<BlockEntity> be)
+	public static BlockEntityType registerBlockEntityType(String name, Supplier<BlockEntity> be, Block... blocks)
 	{
-		return Registry.register(Registry.BLOCK_ENTITIES, MODID + ":" + name, BlockEntityType.Builder.create(be).method_11034(null));
+		return Registry.register(Registry.BLOCK_ENTITY, MODID + ":" + name, BlockEntityType.Builder.create(be,blocks).build(null));
 	}
 }

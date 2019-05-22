@@ -2,15 +2,18 @@ package party.lemons.trapexpansion.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.ChatFormat;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.item.TooltipOptions;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.SpiderEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.*;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShapeContainer;
+import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -26,8 +29,8 @@ public class SpiderProofBlock extends Block
 
 	@Deprecated
 	@Override
-	public VoxelShapeContainer getBoundingShape(BlockState var1, BlockView var2, BlockPos var3) {
-		return VoxelShapes.cube(0.001, 0.001, 0.001,  0.998, 0.998, 0.998);
+	public VoxelShape method_9571(BlockState var1, BlockView var2, BlockPos var3) {
+		return VoxelShapes.cuboid(0.001, 0.001, 0.001,  0.998, 0.998, 0.998);
 	}
 
 	@Deprecated
@@ -42,13 +45,13 @@ public class SpiderProofBlock extends Block
 
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void addInformation(ItemStack stack, BlockView world, List<TextComponent> tooltip, TooltipOptions options)
+	public void buildTooltip(ItemStack stack, BlockView world, List<Component> tooltip, TooltipContext context)
 	{
-		TranslatableTextComponent text = new TranslatableTextComponent("trapexpansion.tip.spiderproof");
-		text.setStyle(new Style().setColor(TextFormat.DARK_GRAY));
+		TranslatableComponent text = new TranslatableComponent("trapexpansion.tip.spiderproof");
+		text.setStyle(new Style().setColor(ChatFormat.DARK_GRAY));
 
 		tooltip.add(text);
 
-		super.addInformation(stack, world, tooltip, options);
+		super.buildTooltip(stack, world, tooltip, context);
 	}
 }
