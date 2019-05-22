@@ -64,6 +64,11 @@ public class SpikeTrapFloorBlock extends Block
 		return super.getStateForNeighborUpdate(var1, var2, var3, var4, var5, var6);
 	}
 
+	public VoxelShape getOutlineShape(BlockState state, BlockView bv, BlockPos pos, EntityContext ctx)
+	{
+		return getCollisionShape(state, bv, pos, ctx);
+	}
+
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity)
 	{

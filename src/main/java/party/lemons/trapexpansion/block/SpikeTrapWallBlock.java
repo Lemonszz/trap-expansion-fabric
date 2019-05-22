@@ -2,6 +2,7 @@ package party.lemons.trapexpansion.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.PressurePlateBlock;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.state.StateFactory;
 import net.minecraft.state.property.DirectionProperty;
@@ -42,7 +43,6 @@ public class SpikeTrapWallBlock extends SpikeTrapFloorBlock
 				return AABB_EAST;
 		}
 	}
-
 
 	@Override
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> st) {
