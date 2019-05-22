@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.mob.SpiderEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.chat.Component;
@@ -29,7 +30,7 @@ public class SpiderProofBlock extends Block
 
 	@Deprecated
 	@Override
-	public VoxelShape method_9571(BlockState var1, BlockView var2, BlockPos var3) {
+	public VoxelShape getCollisionShape(BlockState var1, BlockView var2, BlockPos var3, EntityContext context) {
 		return VoxelShapes.cuboid(0.001, 0.001, 0.001,  0.998, 0.998, 0.998);
 	}
 
