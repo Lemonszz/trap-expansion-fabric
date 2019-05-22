@@ -51,9 +51,8 @@ public class FanBlock extends BlockWithEntity
 	}
 
 	@Override
-	public void updateNeighborStates(BlockState state, IWorld iworld, BlockPos pos, int int_1)
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos pos2, boolean boolean_1)
 	{
-		World world = (World)iworld;
 		boolean powered = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.up());
 
 		if (powered)

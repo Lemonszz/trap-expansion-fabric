@@ -1,0 +1,7 @@
+{
+  "id": "trapexpansion",
+  "name": "Trap Expansion",
+  "version": "1.0.1",
+  "side": "universal",
+  "initializer": "party.lemons.trapexpansion.TrapExpansion"
+}

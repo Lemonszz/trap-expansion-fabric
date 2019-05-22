@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "out=0,direction=down":  { "model": "trapexpansion:block/spike_in", "x": 180 },
+    "out=1,direction=down":  { "model": "trapexpansion:block/spike_mid", "x": 180 },
+    "out=2,direction=down":  { "model": "trapexpansion:block/spike_out", "x": 180 },
+    "out=0,direction=up":  { "model": "trapexpansion:block/spike_in", "x": 0 },
+    "out=1,direction=up":  { "model": "trapexpansion:block/spike_mid", "x": 0 },
+    "out=2,direction=up":  { "model": "trapexpansion:block/spike_out", "x": 0 }
+  }
+}
