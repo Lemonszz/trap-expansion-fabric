@@ -19,7 +19,7 @@ public class SpikeTrapWallBlock extends SpikeTrapFloorBlock
 	protected static final VoxelShape AABB_WEST = VoxelShapes.cuboid(1D, 0D, 0.0D, 0.9D, 1.0D, 1.0D);
 	protected static final VoxelShape AABB_EAST = VoxelShapes.cuboid(0.0D, 0D, 0.0D, 0.1D, 1D, 1.0D);
 
-	public static final DirectionProperty DIRECTION_WALL = DirectionProperty.create("direction", f->f.getAxis().isHorizontal());
+	public static final DirectionProperty DIRECTION_WALL = DirectionProperty.of("direction", f->f.getAxis().isHorizontal());
 
 	public SpikeTrapWallBlock(Settings settings)
 	{
@@ -27,6 +27,7 @@ public class SpikeTrapWallBlock extends SpikeTrapFloorBlock
 		this.setDefaultState(this.stateFactory.getDefaultState().with(OUT, 0).with(DIRECTION_WALL, Direction.NORTH));
 	}
 
+	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, EntityContext context)
 	{
 		switch(state.get(DIRECTION_WALL))

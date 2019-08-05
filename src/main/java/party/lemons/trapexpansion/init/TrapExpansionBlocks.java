@@ -38,8 +38,8 @@ public class TrapExpansionBlocks
 
 		if(doItem)
 		{
-			BlockItem item = new BlockItem(block, new Item.Settings().itemGroup(ItemGroup.REDSTONE));
-			item.registerBlockItemMap(Item.BLOCK_ITEM_MAP, item);
+			BlockItem item = new BlockItem(block, new Item.Settings().group(ItemGroup.REDSTONE));
+			item.appendBlocks(Item.BLOCK_ITEMS, item);
 			TrapExpansionItems.registerItem(item, name);
 		}
 		return block;

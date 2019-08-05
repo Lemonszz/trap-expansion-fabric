@@ -3,6 +3,8 @@ package party.lemons.trapexpansion.block;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.IntProperty;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import party.lemons.trapexpansion.init.TrapExpansionBlocks;
@@ -17,10 +19,8 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateFactory;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.IntegerProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BoundingBox;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.IWorld;
@@ -35,8 +35,8 @@ public class SpikeTrapFloorBlock extends Block
 	protected static final VoxelShape AABB_UP = VoxelShapes.cuboid(0.0D, 0.0D, 0.0D, 1.0D, 0.1D, 1.0D);
 	protected static final VoxelShape AABB_DOWN =  VoxelShapes.cuboid(0.0D, 0.9D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-	public static final IntegerProperty OUT = IntegerProperty.create("out", 0, 2);
-	public static final DirectionProperty DIRECTION = DirectionProperty.create("direction", f->f.getAxis().isVertical());
+	public static final IntProperty OUT = IntProperty.of("out", 0, 2);
+	public static final DirectionProperty DIRECTION = DirectionProperty.of("direction", f->f.getAxis().isVertical());
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
 	public SpikeTrapFloorBlock(Settings settings)
@@ -64,6 +64,7 @@ public class SpikeTrapFloorBlock extends Block
 		return super.getStateForNeighborUpdate(var1, var2, var3, var4, var5, var6);
 	}
 
+	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView bv, BlockPos pos, EntityContext ctx)
 	{
 		return getCollisionShape(state, bv, pos, ctx);
@@ -134,27 +135,28 @@ public class SpikeTrapFloorBlock extends Block
 	}
 
 	@Override
-	public boolean isFullBoundsCubeForCulling(BlockState var1)
+	public boolean isOpaque(BlockState var1)
 	{
 		return false;
 	}
 
+	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx)
 	{
 		FluidState fs = ctx.getWorld().getFluidState(ctx.getBlockPos());
 		boolean isWater = fs.getFluid() == Fluids.WATER;
 
-		if(ctx.getFacing() == Direction.DOWN)
+		if(ctx.getSide() == Direction.DOWN)
 			return this.getDefaultState().with(DIRECTION, Direction.DOWN).with(WATERLOGGED, isWater);
 
 
-		switch(ctx.getFacing())
+		switch(ctx.getSide())
 		{
 			case NORTH:
 			case SOUTH:
 			case WEST:
 			case EAST:
-				return TrapExpansionBlocks.SPIKE_TRAP_WALL.getDefaultState().with(SpikeTrapWallBlock.DIRECTION_WALL, ctx.getFacing()).with(WATERLOGGED, isWater);
+				return TrapExpansionBlocks.SPIKE_TRAP_WALL.getDefaultState().with(SpikeTrapWallBlock.DIRECTION_WALL, ctx.getSide()).with(WATERLOGGED, isWater);
 		}
 
 		return this.getDefaultState().with(WATERLOGGED, isWater);
@@ -198,7 +200,7 @@ public class SpikeTrapFloorBlock extends Block
 		}
 
 		world.setBlockState(pos, state.with(OUT, endValue));
-		world.scheduleBlockRender(pos);
+		world.scheduleBlockRender(pos, state, state.with(OUT, endValue));
 		if(endValue != 2 || !powered)
 			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
 	}
@@ -206,7 +208,7 @@ public class SpikeTrapFloorBlock extends Block
 	protected boolean hasEntity(World worldIn, BlockPos pos, BlockState state)
 	{
 		List<? extends Entity > list;
-		list= worldIn.getEntities(Entity.class, new BoundingBox(0, 0, 0, 1, 1, 1).offset(pos), e->true);
+		list= worldIn.getEntities(Entity.class, new Box(0, 0, 0, 1, 1, 1).offset(pos), e->true);
 		if (!list.isEmpty())
 		{
 			for (Entity entity : list)
