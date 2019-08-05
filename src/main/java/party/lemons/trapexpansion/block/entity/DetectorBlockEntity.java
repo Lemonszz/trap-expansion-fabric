@@ -34,7 +34,7 @@ public class DetectorBlockEntity extends BlockEntity implements Tickable
 				return;
 
 			Direction facing = state.get(DetectorBlock.FACING);
-			Box bb = new Box(0, 0, 0, 1, 1, 1).offset(pos.offset(facing)).expand(facing.getOffsetX() * RANGE, facing.getOffsetY() * RANGE, facing.getOffsetZ() * RANGE);
+			Box bb = new Box(0, 0, 0, 1, 1, 1).offset(pos.offset(facing)).stretch(facing.getOffsetX() * RANGE, facing.getOffsetY() * RANGE, facing.getOffsetZ() * RANGE);
 			List<Entity> entities = world.getEntities(Entity.class, bb, e->true);
 
 			int entityCount = entities.size();
