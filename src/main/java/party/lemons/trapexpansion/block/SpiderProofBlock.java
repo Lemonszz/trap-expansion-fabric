@@ -2,7 +2,6 @@ package party.lemons.trapexpansion.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.ChatFormat;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
@@ -10,9 +9,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.mob.SpiderEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -46,10 +46,10 @@ public class SpiderProofBlock extends Block
 
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void buildTooltip(ItemStack stack, BlockView world, List<Component> tooltip, TooltipContext context)
+	public void buildTooltip(ItemStack stack, BlockView world, List<Text> tooltip, TooltipContext context)
 	{
-		TranslatableComponent text = new TranslatableComponent("trapexpansion.tip.spiderproof");
-		text.setStyle(new Style().setColor(ChatFormat.DARK_GRAY));
+		TranslatableText text = new TranslatableText("trapexpansion.tip.spiderproof");
+		text.setStyle(new Style().setColor(Formatting.DARK_GRAY));
 
 		tooltip.add(text);
 

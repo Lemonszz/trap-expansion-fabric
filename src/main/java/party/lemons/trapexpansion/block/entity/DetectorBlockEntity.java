@@ -1,5 +1,6 @@
 package party.lemons.trapexpansion.block.entity;
 
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import party.lemons.trapexpansion.block.DetectorBlock;
 import party.lemons.trapexpansion.init.TrapExpansionBlockEntities;
@@ -7,7 +8,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Tickable;
-import net.minecraft.util.math.BoundingBox;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class DetectorBlockEntity extends BlockEntity implements Tickable
 				return;
 
 			Direction facing = state.get(DetectorBlock.FACING);
-			BoundingBox bb = new BoundingBox(0, 0, 0, 1, 1, 1).offset(pos.offset(facing)).expand(facing.getOffsetX() * RANGE, facing.getOffsetY() * RANGE, facing.getOffsetZ() * RANGE);
+			Box bb = new Box(0, 0, 0, 1, 1, 1).offset(pos.offset(facing)).expand(facing.getOffsetX() * RANGE, facing.getOffsetY() * RANGE, facing.getOffsetZ() * RANGE);
 			List<Entity> entities = world.getEntities(Entity.class, bb, e->true);
 
 			int entityCount = entities.size();
@@ -52,7 +52,7 @@ public class DetectorBlockEntity extends BlockEntity implements Tickable
 
 					for(int b = 1; b < Math.abs(xCheck + yCheck + zCheck); b++)
 					{
-						if(world.getBlockState(this.pos.offset(facing, b)).isFullBoundsCubeForCulling())
+						if(world.getBlockState(this.pos.offset(facing, b)).isOpaque())
 						{
 							entityCount--;
 							if(entityCount <= 0)
