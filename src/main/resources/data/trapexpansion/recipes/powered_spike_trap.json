@@ -1,0 +1,23 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "i i",
+    "iii",
+    "SRS"
+  ],
+  "key": {
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "minecraft:stone"
+    },
+    "R": {
+      "item": "minecraft:redstone_torch"
+    }
+  },
+  "result": {
+    "item": "trapexpansion:powered_spike_trap",
+    "count": 1
+  }
+}

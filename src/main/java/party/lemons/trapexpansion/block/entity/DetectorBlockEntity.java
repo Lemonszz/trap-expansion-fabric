@@ -1,62 +1,53 @@
 package party.lemons.trapexpansion.block.entity;
 
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import party.lemons.trapexpansion.block.DetectorBlock;
-import party.lemons.trapexpansion.init.TrapExpansionBlockEntities;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Tickable;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import party.lemons.trapexpansion.block.DetectorBlock;
+import party.lemons.trapexpansion.init.TrapExpansionBlockEntities;
 
 import java.util.List;
 
-public class DetectorBlockEntity extends BlockEntity implements Tickable
-{
+public class DetectorBlockEntity extends BlockEntity implements Tickable {
 	private static final int STEP_TIME = 4;
 	private static final int RANGE = 5;
 
-	public DetectorBlockEntity()
-	{
+	public DetectorBlockEntity() {
 		super(TrapExpansionBlockEntities.DETECTOR_BE);
 	}
 
 
 	@Override
-	public void tick()
-	{
-		if(world.getTime() % STEP_TIME == 0 && !world.isClient)
-		{
+	public void tick() {
+		if (world.getTime() % STEP_TIME == 0 && !world.isClient) {
 			BlockState state = world.getBlockState(pos);
 
-			if(!(state.getBlock() instanceof DetectorBlock))
+			if (!(state.getBlock() instanceof DetectorBlock))
 				return;
 
 			Direction facing = state.get(DetectorBlock.FACING);
 			Box bb = new Box(0, 0, 0, 1, 1, 1).offset(pos.offset(facing)).stretch(facing.getOffsetX() * RANGE, facing.getOffsetY() * RANGE, facing.getOffsetZ() * RANGE);
-			List<Entity> entities = world.getEntities(Entity.class, bb, e->true);
+			List<Entity> entities = world.getEntities(Entity.class, bb, e -> true);
 
 			int entityCount = entities.size();
 			boolean hasEntity = entityCount > 0;
 
-			if(hasEntity)
-			{
-				for(int i = 0; i < entities.size(); i++)
-				{
+			if (hasEntity) {
+				for (int i = 0; i < entities.size(); i++) {
 					Entity e = entities.get(i);
 
 					int xCheck = facing.getOffsetX() * (MathHelper.floor(e.x) - this.pos.getX());
 					int yCheck = facing.getOffsetY() * (MathHelper.floor(e.y) - this.pos.getY());
 					int zCheck = facing.getOffsetZ() * (MathHelper.floor(e.z) - this.pos.getZ());
 
-					for(int b = 1; b < Math.abs(xCheck + yCheck + zCheck); b++)
-					{
-						if(world.getBlockState(this.pos.offset(facing, b)).isOpaque())
-						{
+					for (int b = 1; b < Math.abs(xCheck + yCheck + zCheck); b++) {
+						if (world.getBlockState(this.pos.offset(facing, b)).isOpaque()) {
 							entityCount--;
-							if(entityCount <= 0)
-							{
+							if (entityCount <= 0) {
 								hasEntity = false;
 								break;
 							}
@@ -67,8 +58,7 @@ public class DetectorBlockEntity extends BlockEntity implements Tickable
 
 			boolean powered = state.get(DetectorBlock.POWERED);
 
-			if(powered != hasEntity)
-			{
+			if (powered != hasEntity) {
 				world.setBlockState(pos, state.with(DetectorBlock.POWERED, hasEntity));
 			}
 		}

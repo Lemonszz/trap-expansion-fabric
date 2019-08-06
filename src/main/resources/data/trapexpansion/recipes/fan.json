@@ -1,26 +1,26 @@
 {
-  "type": "crafting_shaped",
-  "pattern": [
-    "#O#",
-    "OiO",
-    "ROR"
-  ],
-  "key": {
-    "#": {
-      "item": "minecraft:cobblestone"
-    },
-    "O": {
-      "tag": "minecraft:planks"
-    },
-    "i": {
-      "item": "minecraft:iron_ingot"
-    },
-    "R": {
-      "item": "minecraft:redstone"
-    }
-  },
-  "result": {
-    "item": "trapexpansion:fan",
-    "count": 1
-  }
+	"type": "crafting_shaped",
+	"pattern": [
+		"#O#",
+		"OiO",
+		"ROR"
+	],
+	"key": {
+		"#": {
+			"item": "minecraft:cobblestone"
+		},
+		"O": {
+			"tag": "minecraft:planks"
+		},
+		"i": {
+			"item": "minecraft:iron_ingot"
+		},
+		"R": {
+			"item": "minecraft:redstone"
+		}
+	},
+	"result": {
+		"item": "trapexpansion:fan",
+		"count": 1
+	}
 }

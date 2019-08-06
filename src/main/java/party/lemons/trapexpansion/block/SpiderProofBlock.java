@@ -21,33 +21,28 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class SpiderProofBlock extends Block
-{
-	public SpiderProofBlock(Settings settings)
-	{
+public class SpiderProofBlock extends Block {
+	public SpiderProofBlock(Settings settings) {
 		super(settings);
 	}
 
 	@Deprecated
 	@Override
 	public VoxelShape getCollisionShape(BlockState var1, BlockView var2, BlockPos var3, EntityContext context) {
-		return VoxelShapes.cuboid(0.001, 0.001, 0.001,  0.998, 0.998, 0.998);
+		return VoxelShapes.cuboid(0.001, 0.001, 0.001, 0.998, 0.998, 0.998);
 	}
 
 	@Deprecated
 	@Override
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity)
-	{
-		if(entity instanceof SpiderEntity)
-		{
-			((SpiderEntity)entity).setCanClimb(false);
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+		if (entity instanceof SpiderEntity) {
+			((SpiderEntity) entity).setCanClimb(false);
 		}
 	}
 
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void buildTooltip(ItemStack stack, BlockView world, List<Text> tooltip, TooltipContext context)
-	{
+	public void buildTooltip(ItemStack stack, BlockView world, List<Text> tooltip, TooltipContext context) {
 		TranslatableText text = new TranslatableText("trapexpansion.tip.spiderproof");
 		text.setStyle(new Style().setColor(Formatting.DARK_GRAY));
 

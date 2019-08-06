@@ -1,14 +1,17 @@
 {
-  "spike_out_1":
-  {
-    "category": "block",
-    "subtitle": "trapexpansion.subtitle.spikeout",
-    "sounds": ["trapexpansion:spike_out_1"]
-  },
-  "spike_out_2":
-  {
-    "category": "block",
-    "subtitle": "trapexpansion.subtitle.spikeout",
-    "sounds": ["trapexpansion:spike_out_2", "trapexpansion:spike_out_3"]
-  }
+	"spike_out_1": {
+		"category": "block",
+		"subtitle": "trapexpansion.subtitle.spikeout",
+		"sounds": [
+			"trapexpansion:spike_out_1"
+		]
+	},
+	"spike_out_2": {
+		"category": "block",
+		"subtitle": "trapexpansion.subtitle.spikeout",
+		"sounds": [
+			"trapexpansion:spike_out_2",
+			"trapexpansion:spike_out_3"
+		]
+	}
 }

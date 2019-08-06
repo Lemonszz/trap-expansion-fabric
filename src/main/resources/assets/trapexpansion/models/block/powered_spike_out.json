@@ -1,9 +1,9 @@
 {
 	"textures": {
-		"0": "trapexpansion:block/spike_trap_base_bottom",
-		"1": "trapexpansion:block/spike_trap_base",
+		"0": "trapexpansion:block/powered_spike_trap_base_bottom",
+		"1": "trapexpansion:block/powered_spike_trap_base",
 		"2": "block/iron_block",
-		"particle": "trapexpansion:block/spike_trap_base_bottom"
+		"particle": "trapexpansion:block/powered_spike_trap_base_bottom"
 	},
 	"elements": [
 		{

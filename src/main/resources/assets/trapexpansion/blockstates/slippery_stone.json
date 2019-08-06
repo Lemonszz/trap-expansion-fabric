@@ -1,5 +1,7 @@
 {
-  "variants": {
-    "": { "model": "trapexpansion:block/slippery_stone" }
-  }
+	"variants": {
+		"": {
+			"model": "trapexpansion:block/slippery_stone"
+		}
+	}
 }

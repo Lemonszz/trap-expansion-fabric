@@ -6,8 +6,7 @@ import party.lemons.trapexpansion.init.TrapExpansionBlocks;
 import party.lemons.trapexpansion.init.TrapExpansionItems;
 import party.lemons.trapexpansion.init.TrapExpansionSounds;
 
-public class TrapExpansion implements ModInitializer
-{
+public class TrapExpansion implements ModInitializer {
 	public static final String MODID = "trapexpansion";
 
 	@Override

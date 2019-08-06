@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "trapexpansion:block/spike_trap_base_bottom",
-		"1": "trapexpansion:block/spike_trap_base",
-		"particle": "trapexpansion:block/spike_trap_base_bottom"
+		"0": "trapexpansion:block/powered_spike_trap_base_bottom",
+		"1": "trapexpansion:block/powered_spike_trap_base",
+		"particle": "trapexpansion:block/powered_spike_trap_base_bottom"
 	},
 	"elements": [
 		{

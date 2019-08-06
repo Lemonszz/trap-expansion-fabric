@@ -5,15 +5,12 @@ import net.minecraft.util.registry.Registry;
 
 import static party.lemons.trapexpansion.TrapExpansion.MODID;
 
-public class TrapExpansionItems
-{
-	public static void init()
-	{
+public class TrapExpansionItems {
+	public static void init() {
 
 	}
 
-	public static Item registerItem(Item item, String name)
-	{
+	public static Item registerItem(Item item, String name) {
 		Registry.register(Registry.ITEM, MODID + ":" + name, item);
 
 		return item;
