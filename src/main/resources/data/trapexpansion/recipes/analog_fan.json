@@ -1,0 +1,26 @@
+{
+	"type": "crafting_shaped",
+	"pattern": [
+		"#O#",
+		"OqO",
+		"ROR"
+	],
+	"key": {
+		"#": {
+			"item": "minecraft:cobblestone"
+		},
+		"O": {
+			"tag": "minecraft:planks"
+		},
+		"q": {
+			"item": "minecraft:nether_quartz"
+		},
+		"R": {
+			"item": "minecraft:redstone"
+		}
+	},
+	"result": {
+		"item": "trapexpansion:analog_fan",
+		"count": 1
+	}
+}

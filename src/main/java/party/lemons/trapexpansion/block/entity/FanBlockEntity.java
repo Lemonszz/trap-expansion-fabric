@@ -16,7 +16,6 @@ import java.util.List;
 public class FanBlockEntity extends BlockEntity implements Tickable {
 	private static final int STEP_TIME = 1;
 	private static final float SPEED = 1F;
-	private static final float RANGE = 8F;
 
 	public FanBlockEntity() {
 		super(TrapExpansionBlockEntities.FAN_BE);
@@ -34,8 +33,9 @@ public class FanBlockEntity extends BlockEntity implements Tickable {
 				return;
 
 			Direction facing = state.get(FanBlock.FACING);
+			double range = ((FanBlock) state.getBlock()).getFanRange(state);
 
-			Box bb = new Box(0, 0, 0, 1, 1, 1).offset(pos.offset(facing)).stretch(facing.getOffsetX() * RANGE, facing.getOffsetY() * RANGE, facing.getOffsetZ() * RANGE);
+			Box bb = new Box(0, 0, 0, 1, 1, 1).offset(pos.offset(facing)).stretch(facing.getOffsetX() * range, facing.getOffsetY() * range, facing.getOffsetZ() * range);
 			List<Entity> entities = world.getEntities(Entity.class, bb, e -> true);
 
 			for (int i = 0; i < entities.size(); i++) {
@@ -52,7 +52,7 @@ public class FanBlockEntity extends BlockEntity implements Tickable {
 				}
 
 				double distance = e.getPos().distanceTo(new Vec3d(pos));
-				float distanceDecay = Math.max(0, (float) ((RANGE - distance) / (RANGE * 8)));
+				float distanceDecay = Math.max(0, (float) ((range - distance) / (range * 8)));
 				float speed = SPEED;
 				if (facing == Direction.UP || facing == Direction.DOWN)
 					speed += 1;

@@ -1,0 +1,52 @@
+{
+	"variants": {
+		"powered=true,facing=down": {
+			"model": "trapexpansion:block/analog_fan_on",
+			"x": 90
+		},
+		"powered=false,facing=down": {
+			"model": "trapexpansion:block/analog_fan_off",
+			"x": 90
+		},
+		"powered=true,facing=north": {
+			"model": "trapexpansion:block/analog_fan_on",
+			"y": 0
+		},
+		"powered=false,facing=north": {
+			"model": "trapexpansion:block/analog_fan_off",
+			"y": 0
+		},
+		"powered=true,facing=south": {
+			"model": "trapexpansion:block/analog_fan_on",
+			"y": 180
+		},
+		"powered=false,facing=south": {
+			"model": "trapexpansion:block/analog_fan_off",
+			"y": 180
+		},
+		"powered=true,facing=east": {
+			"model": "trapexpansion:block/analog_fan_on",
+			"y": 90
+		},
+		"powered=false,facing=east": {
+			"model": "trapexpansion:block/analog_fan_off",
+			"y": 90
+		},
+		"powered=true,facing=west": {
+			"model": "trapexpansion:block/analog_fan_on",
+			"y": 270
+		},
+		"powered=false,facing=west": {
+			"model": "trapexpansion:block/analog_fan_off",
+			"y": 270
+		},
+		"powered=true,facing=up": {
+			"model": "trapexpansion:block/analog_fan_on",
+			"x": 270
+		},
+		"powered=false,facing=up": {
+			"model": "trapexpansion:block/analog_fan_off",
+			"x": 270
+		}
+	}
+}

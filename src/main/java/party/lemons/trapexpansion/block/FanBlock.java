@@ -13,10 +13,13 @@ import net.minecraft.state.StateFactory;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.BlockMirror;
+import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+
 import party.lemons.trapexpansion.block.entity.FanBlockEntity;
 
 import java.util.Random;
@@ -89,5 +92,19 @@ public class FanBlock extends BlockWithEntity {
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
 		return new FanBlockEntity();
+	}
+	
+	@Override
+	public BlockState rotate(BlockState blockState_1, BlockRotation blockRotation_1) {
+		return blockState_1.with(FACING, blockRotation_1.rotate(blockState_1.get(FACING)));
+	}
+	
+	@Override
+	public BlockState mirror(BlockState blockState_1, BlockMirror blockMirror_1) {
+		return blockState_1.rotate(blockMirror_1.getRotation(blockState_1.get(FACING)));
+	}
+	
+	public double getFanRange(BlockState state) {
+		return 8.5;
 	}
 }

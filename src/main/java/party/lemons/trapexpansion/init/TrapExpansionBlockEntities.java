@@ -16,11 +16,11 @@ public class TrapExpansionBlockEntities {
 	public static BlockEntityType<DetectorBlockEntity> DETECTOR_BE;
 
 	public static void init() {
-		FAN_BE = registerBlockEntityType("fan", FanBlockEntity::new, TrapExpansionBlocks.FAN);
+		FAN_BE = registerBlockEntityType("fan", FanBlockEntity::new, TrapExpansionBlocks.FAN, TrapExpansionBlocks.ANALOG_FAN);
 		DETECTOR_BE = registerBlockEntityType("detector", DetectorBlockEntity::new, TrapExpansionBlocks.DETECTOR);
 	}
 
-	public static BlockEntityType registerBlockEntityType(String name, Supplier<BlockEntity> be, Block... blocks) {
+	public static <T extends BlockEntity> BlockEntityType<T> registerBlockEntityType(String name, Supplier<T> be, Block... blocks) {
 		return Registry.register(Registry.BLOCK_ENTITY, MODID + ":" + name, BlockEntityType.Builder.create(be, blocks).build(null));
 	}
 }

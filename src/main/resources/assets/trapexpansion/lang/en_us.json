@@ -4,6 +4,7 @@
 	"block.trapexpansion.powered_spike_trap": "Powered Spike Trap",
 	"block.trapexpansion.slippery_stone": "Slippery Stone",
 	"block.trapexpansion.fan": "Fan",
+    "block.trapexpansion.analog_fan": "Analog Fan",
 	"block.trapexpansion.detector": "Detector",
 	"trapexpansion.tip.spiderproof": "Spider-Proof",
 	"death.attack.trapexpansion.spike": "%1$s was skewered",

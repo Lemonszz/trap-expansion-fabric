@@ -29,7 +29,7 @@ public class PoweredSpikeTrapBlock extends SpikeTrapBlock {
 	@Override
 	protected void updateState(World world, BlockPos pos, BlockState state, int outValue) {
 		int change = 0;
-		boolean powered = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.offset(state.get(DIRECTION).getOpposite()));
+		boolean powered = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.offset(state.get(FACING).getOpposite()));
 		if (!powered) {
 			change = -1;
 		} else if (outValue < 2) {

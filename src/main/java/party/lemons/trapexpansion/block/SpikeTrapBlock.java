@@ -14,6 +14,8 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.BlockMirror;
+import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
@@ -31,7 +33,7 @@ import java.util.Random;
 
 public class SpikeTrapBlock extends Block {
 	public static final IntProperty OUT = IntProperty.of("out", 0, 2);
-	public static final DirectionProperty DIRECTION = DirectionProperty.of("direction", Direction.values());
+	public static final DirectionProperty FACING = Properties.FACING;
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 	protected static final VoxelShape AABB_UP = VoxelShapes.cuboid(0.0D, 0.0D, 0.0D, 1.0D, 0.06D, 1.0D);
 	protected static final VoxelShape AABB_DOWN = VoxelShapes.cuboid(0.0D, 0.94D, 0.0D, 1.0D, 1.0D, 1.0D);
@@ -42,7 +44,7 @@ public class SpikeTrapBlock extends Block {
 
 	public SpikeTrapBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.stateFactory.getDefaultState().with(OUT, 0).with(DIRECTION, Direction.UP).with(WATERLOGGED, false));
+		this.setDefaultState(this.stateFactory.getDefaultState().with(OUT, 0).with(FACING, Direction.UP).with(WATERLOGGED, false));
 	}
 
 	public SpikeTrapBlock(Settings settings, boolean child) {
@@ -116,7 +118,7 @@ public class SpikeTrapBlock extends Block {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, EntityContext context) {
-		switch (state.get(DIRECTION)) {
+		switch (state.get(FACING)) {
 			case NORTH:
 				return AABB_NORTH;
 			case SOUTH:
@@ -143,7 +145,7 @@ public class SpikeTrapBlock extends Block {
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		FluidState fs = ctx.getWorld().getFluidState(ctx.getBlockPos());
 		boolean isWater = fs.getFluid() == Fluids.WATER;
-		return this.getDefaultState().with(DIRECTION, ctx.getSide()).with(WATERLOGGED, isWater);
+		return this.getDefaultState().with(FACING, ctx.getSide()).with(WATERLOGGED, isWater);
 	}
 
 	@Deprecated
@@ -199,7 +201,16 @@ public class SpikeTrapBlock extends Block {
 
 	@Override
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> st) {
-		st.add(OUT).add(DIRECTION).add(WATERLOGGED);
+		st.add(OUT).add(FACING).add(WATERLOGGED);
 	}
-
+	
+	@Override
+	public BlockState rotate(BlockState blockState_1, BlockRotation blockRotation_1) {
+		return blockState_1.with(FACING, blockRotation_1.rotate(blockState_1.get(FACING)));
+	}
+	
+	@Override
+	public BlockState mirror(BlockState blockState_1, BlockMirror blockMirror_1) {
+		return blockState_1.rotate(blockMirror_1.getRotation(blockState_1.get(FACING)));
+	}
 }

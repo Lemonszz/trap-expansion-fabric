@@ -10,6 +10,8 @@ import net.minecraft.state.StateFactory;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.BlockMirror;
+import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
@@ -62,5 +64,15 @@ public class DetectorBlock extends BlockWithEntity {
 	@Override
 	public BlockRenderType getRenderType(BlockState var1) {
 		return BlockRenderType.MODEL;
+	}
+	
+	@Override
+	public BlockState rotate(BlockState blockState_1, BlockRotation blockRotation_1) {
+		return blockState_1.with(FACING, blockRotation_1.rotate(blockState_1.get(FACING)));
+	}
+	
+	@Override
+	public BlockState mirror(BlockState blockState_1, BlockMirror blockMirror_1) {
+		return blockState_1.rotate(blockMirror_1.getRotation(blockState_1.get(FACING)));
 	}
 }
