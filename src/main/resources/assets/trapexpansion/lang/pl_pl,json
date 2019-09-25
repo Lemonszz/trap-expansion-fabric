@@ -1,0 +1,13 @@
+{
+	"trapexpansion.subtitle.spikeout": "Spike Clangs",
+	"block.trapexpansion.spike_trap": "Pułapka z kolcami",
+	"block.trapexpansion.powered_spike_trap": "Napędzana pułapka z kolcami",
+	"block.trapexpansion.slippery_stone": "Śliski Kamień",
+	"block.trapexpansion.fan": "Wentylator",
+  "block.trapexpansion.analog_fan": "Wentylator analogowy",
+	"block.trapexpansion.detector": "Detektor",
+	"trapexpansion.tip.spiderproof": "Spider-Proof",
+	"death.attack.trapexpansion.spike": "%1$s został przebity",
+	"death.attack.trapexpansion.spike.player": "%1$s został przebity przez %2$s",
+	"itemGroup.trapexpansion": "Trap Expansion"
+}
