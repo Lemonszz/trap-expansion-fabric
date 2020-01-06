@@ -2,7 +2,7 @@ package party.lemons.trapexpansion.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.state.StateFactory;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
@@ -14,11 +14,11 @@ public class AnalogFanBlock extends FanBlock {
 	
 	public AnalogFanBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.stateFactory.getDefaultState().with(POWER, 0).with(POWERED, false).with(FACING, Direction.SOUTH));
+		this.setDefaultState(this.getStateManager().getDefaultState().with(POWER, 0).with(POWERED, false).with(FACING, Direction.SOUTH));
 	}
 	
 	@Override
-	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos pos2, boolean boolean_1) {
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos neighborPos, boolean moved) {
 		boolean powered = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.up());
 		
 		if (powered) {
@@ -47,7 +47,7 @@ public class AnalogFanBlock extends FanBlock {
 	}
 	
 	@Override
-	protected void appendProperties(StateFactory.Builder<Block, BlockState> st) {
+	protected void appendProperties(StateManager.Builder<Block, BlockState> st) {
 		st.add(FACING).add(POWER).add(POWERED);
 	}
 	

@@ -28,7 +28,7 @@ public class SpiderProofBlock extends Block {
 
 	@Deprecated
 	@Override
-	public VoxelShape getCollisionShape(BlockState var1, BlockView var2, BlockPos var3, EntityContext context) {
+	public VoxelShape getCollisionShape(BlockState state, BlockView view, BlockPos pos, EntityContext context) {
 		return VoxelShapes.cuboid(0.001, 0.001, 0.001, 0.998, 0.998, 0.998);
 	}
 

@@ -9,7 +9,7 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.state.StateFactory;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
@@ -30,7 +30,7 @@ public class FanBlock extends BlockWithEntity {
 
 	public FanBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.stateFactory.getDefaultState().with(POWERED, false).with(FACING, Direction.SOUTH));
+		this.setDefaultState(this.getStateManager().getDefaultState().with(POWERED, false).with(FACING, Direction.SOUTH));
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -47,12 +47,12 @@ public class FanBlock extends BlockWithEntity {
 	}
 
 	@Override
-	public BlockRenderType getRenderType(BlockState var1) {
+	public BlockRenderType getRenderType(BlockState state) {
 		return BlockRenderType.MODEL;
 	}
 
 	@Override
-	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos pos2, boolean boolean_1) {
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos neighborPos, boolean moved) {
 		boolean powered = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.up());
 
 		if (powered) {
@@ -67,7 +67,7 @@ public class FanBlock extends BlockWithEntity {
 	}
 
 	@Override
-	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean bool) {
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moved) {
 		if (world.isReceivingRedstonePower(pos)) {
 			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
 			world.setBlockState(pos, state.with(POWERED, true));
@@ -85,23 +85,23 @@ public class FanBlock extends BlockWithEntity {
 	}
 
 	@Override
-	protected void appendProperties(StateFactory.Builder<Block, BlockState> st) {
+	protected void appendProperties(StateManager.Builder<Block, BlockState> st) {
 		st.add(FACING).add(POWERED);
 	}
 
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
+	public BlockEntity createBlockEntity(BlockView view) {
 		return new FanBlockEntity();
 	}
 	
 	@Override
-	public BlockState rotate(BlockState blockState_1, BlockRotation blockRotation_1) {
-		return blockState_1.with(FACING, blockRotation_1.rotate(blockState_1.get(FACING)));
+	public BlockState rotate(BlockState state, BlockRotation rotation) {
+		return state.with(FACING, rotation.rotate(state.get(FACING)));
 	}
 	
 	@Override
-	public BlockState mirror(BlockState blockState_1, BlockMirror blockMirror_1) {
-		return blockState_1.rotate(blockMirror_1.getRotation(blockState_1.get(FACING)));
+	public BlockState mirror(BlockState state, BlockMirror mirror) {
+		return state.rotate(mirror.getRotation(state.get(FACING)));
 	}
 	
 	public double getFanRange(BlockState state) {

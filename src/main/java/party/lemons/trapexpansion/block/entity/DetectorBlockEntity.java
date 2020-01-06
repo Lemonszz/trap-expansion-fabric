@@ -40,9 +40,9 @@ public class DetectorBlockEntity extends BlockEntity implements Tickable {
 				for (int i = 0; i < entities.size(); i++) {
 					Entity e = entities.get(i);
 
-					int xCheck = facing.getOffsetX() * (MathHelper.floor(e.x) - this.pos.getX());
-					int yCheck = facing.getOffsetY() * (MathHelper.floor(e.y) - this.pos.getY());
-					int zCheck = facing.getOffsetZ() * (MathHelper.floor(e.z) - this.pos.getZ());
+					int xCheck = facing.getOffsetX() * (MathHelper.floor(e.getX()) - this.pos.getX());
+					int yCheck = facing.getOffsetY() * (MathHelper.floor(e.getY()) - this.pos.getY());
+					int zCheck = facing.getOffsetZ() * (MathHelper.floor(e.getZ()) - this.pos.getZ());
 
 					for (int b = 1; b < Math.abs(xCheck + yCheck + zCheck); b++) {
 						if (world.getBlockState(this.pos.offset(facing, b)).isOpaque()) {

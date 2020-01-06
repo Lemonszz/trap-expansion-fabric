@@ -7,9 +7,10 @@ import net.minecraft.entity.EntityContext;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.state.StateFactory;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.IntProperty;
@@ -23,8 +24,9 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.ViewableWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
+
 import party.lemons.trapexpansion.init.TrapExpansionSounds;
 import party.lemons.trapexpansion.misc.SpikeDamageSource;
 
@@ -44,25 +46,21 @@ public class SpikeTrapBlock extends Block {
 
 	public SpikeTrapBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.stateFactory.getDefaultState().with(OUT, 0).with(FACING, Direction.UP).with(WATERLOGGED, false));
-	}
-
-	public SpikeTrapBlock(Settings settings, boolean child) {
-		super(settings);
+		this.setDefaultState(this.getStateManager().getDefaultState().with(OUT, 0).with(FACING, Direction.UP).with(WATERLOGGED, false));
 	}
 
 	@Override
-	public FluidState getFluidState(BlockState var1) {
-		return var1.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(var1);
+	public FluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
 	}
 
 	@Override
-	public BlockState getStateForNeighborUpdate(BlockState var1, Direction var2, BlockState var3, IWorld var4, BlockPos var5, BlockPos var6) {
-		if (var1.get(WATERLOGGED)) {
-			var4.getFluidTickScheduler().schedule(var5, Fluids.WATER, Fluids.WATER.getTickRate(var4));
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState otherState, IWorld world, BlockPos pos, BlockPos otherPos) {
+		if (state.get(WATERLOGGED)) {
+			world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 
-		return super.getStateForNeighborUpdate(var1, var2, var3, var4, var5, var6);
+		return super.getStateForNeighborUpdate(state, direction, otherState, world, pos, otherPos);
 	}
 
 	@Override
@@ -88,13 +86,13 @@ public class SpikeTrapBlock extends Block {
 
 	@Deprecated
 	@Override
-	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block var4, BlockPos var5, boolean var6) {
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block otherBlock, BlockPos otherPos, boolean var6) {
 		world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
 	}
 
 	@Deprecated
 	@Override
-	public void onScheduledTick(BlockState state, World world, BlockPos pos, Random random) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (!world.isClient) {
 			int i = state.get(OUT);
 
@@ -106,18 +104,18 @@ public class SpikeTrapBlock extends Block {
 
 	@Deprecated
 	@Override
-	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState state2, boolean bool) {
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moved) {
 		if (state.get(OUT) > 0 || world.isReceivingRedstonePower(pos))
 			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
 	}
 
 	@Override
-	public int getTickRate(ViewableWorld var1) {
+	public int getTickRate(WorldView view) {
 		return 5;
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, EntityContext context) {
+	public VoxelShape getCollisionShape(BlockState state, BlockView view, BlockPos pos, EntityContext context) {
 		switch (state.get(FACING)) {
 			case NORTH:
 				return AABB_NORTH;
@@ -137,11 +135,6 @@ public class SpikeTrapBlock extends Block {
 	}
 
 	@Override
-	public boolean isOpaque(BlockState var1) {
-		return false;
-	}
-
-	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		FluidState fs = ctx.getWorld().getFluidState(ctx.getBlockPos());
 		boolean isWater = fs.getFluid() == Fluids.WATER;
@@ -150,14 +143,14 @@ public class SpikeTrapBlock extends Block {
 
 	@Deprecated
 	@Override
-	public boolean hasComparatorOutput(BlockState var1) {
+	public boolean hasComparatorOutput(BlockState state) {
 		return true;
 	}
 
 	@Deprecated
 	@Override
-	public int getComparatorOutput(BlockState var1, World var2, BlockPos var3) {
-		return var1.get(OUT);
+	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
+		return state.get(OUT);
 	}
 
 	protected void updateState(World world, BlockPos pos, BlockState state, int outValue) {
@@ -181,14 +174,14 @@ public class SpikeTrapBlock extends Block {
 		}
 
 		world.setBlockState(pos, state.with(OUT, endValue));
-		world.scheduleBlockRender(pos, state, state.with(OUT, endValue));
+		world.checkBlockRerender(pos, state, state.with(OUT, endValue));
 		if (endValue != 2 || !powered)
 			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
 	}
 
-	protected boolean hasEntity(World worldIn, BlockPos pos, BlockState state) {
+	protected boolean hasEntity(World world, BlockPos pos, BlockState state) {
 		List<? extends Entity> list;
-		list = worldIn.getEntities(Entity.class, new Box(0, 0, 0, 1, 1, 1).offset(pos), e -> true);
+		list = world.getEntities(Entity.class, new Box(0, 0, 0, 1, 1, 1).offset(pos), e -> true);
 		if (!list.isEmpty()) {
 			for (Entity entity : list) {
 				if (!entity.canAvoidTraps()) {
@@ -200,17 +193,17 @@ public class SpikeTrapBlock extends Block {
 	}
 
 	@Override
-	protected void appendProperties(StateFactory.Builder<Block, BlockState> st) {
+	protected void appendProperties(StateManager.Builder<Block, BlockState> st) {
 		st.add(OUT).add(FACING).add(WATERLOGGED);
 	}
 	
 	@Override
-	public BlockState rotate(BlockState blockState_1, BlockRotation blockRotation_1) {
-		return blockState_1.with(FACING, blockRotation_1.rotate(blockState_1.get(FACING)));
+	public BlockState rotate(BlockState state, BlockRotation rotation) {
+		return state.with(FACING, rotation.rotate(state.get(FACING)));
 	}
 	
 	@Override
-	public BlockState mirror(BlockState blockState_1, BlockMirror blockMirror_1) {
-		return blockState_1.rotate(blockMirror_1.getRotation(blockState_1.get(FACING)));
+	public BlockState mirror(BlockState state, BlockMirror mirror) {
+		return state.rotate(mirror.getRotation(state.get(FACING)));
 	}
 }

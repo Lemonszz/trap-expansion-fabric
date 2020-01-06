@@ -6,7 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.StateFactory;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
@@ -21,17 +21,17 @@ public class DetectorBlock extends BlockWithEntity {
 	public static final BooleanProperty POWERED = Properties.POWERED;
 	public static final DirectionProperty FACING = Properties.FACING;
 
-	public DetectorBlock(Settings var1) {
-		super(var1);
+	public DetectorBlock(Settings settings) {
+		super(settings);
 	}
 
 	@Override
-	public BlockEntity createBlockEntity(BlockView var1) {
+	public BlockEntity createBlockEntity(BlockView view) {
 		return new DetectorBlockEntity();
 	}
 
 	@Override
-	public boolean emitsRedstonePower(BlockState var1) {
+	public boolean emitsRedstonePower(BlockState state) {
 		return true;
 	}
 
@@ -57,22 +57,22 @@ public class DetectorBlock extends BlockWithEntity {
 	}
 
 	@Override
-	protected void appendProperties(StateFactory.Builder<Block, BlockState> st) {
+	protected void appendProperties(StateManager.Builder<Block, BlockState> st) {
 		st.add(FACING).add(POWERED);
 	}
 
 	@Override
-	public BlockRenderType getRenderType(BlockState var1) {
+	public BlockRenderType getRenderType(BlockState state) {
 		return BlockRenderType.MODEL;
 	}
 	
 	@Override
-	public BlockState rotate(BlockState blockState_1, BlockRotation blockRotation_1) {
-		return blockState_1.with(FACING, blockRotation_1.rotate(blockState_1.get(FACING)));
+	public BlockState rotate(BlockState state, BlockRotation rotation) {
+		return state.with(FACING, rotation.rotate(state.get(FACING)));
 	}
 	
 	@Override
-	public BlockState mirror(BlockState blockState_1, BlockMirror blockMirror_1) {
-		return blockState_1.rotate(blockMirror_1.getRotation(blockState_1.get(FACING)));
+	public BlockState mirror(BlockState state, BlockMirror mirror) {
+		return state.rotate(mirror.getRotation(state.get(FACING)));
 	}
 }
