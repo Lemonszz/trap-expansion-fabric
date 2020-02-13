@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Tickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
@@ -46,7 +47,9 @@ public class FanBlockEntity extends BlockEntity implements Tickable {
 				int zCheck = facing.getOffsetZ() * (MathHelper.floor(e.getZ()) - this.pos.getZ());
 
 				for (int b = 1; b < Math.abs(xCheck + yCheck + zCheck); b++) {
-					if (world.getBlockState(this.pos.offset(facing, b)).isOpaque()) {
+					BlockPos checkPos = this.pos.offset(facing, b);
+					BlockState checkState = world.getBlockState(checkPos);
+					if (checkState.isSideSolidFullSquare(world, checkPos, facing) || checkState.isSideSolidFullSquare(world, checkPos, facing.getOpposite())) {
 						return;
 					}
 				}

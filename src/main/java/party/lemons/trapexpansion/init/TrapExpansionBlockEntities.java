@@ -21,6 +21,6 @@ public class TrapExpansionBlockEntities {
 	}
 
 	public static <T extends BlockEntity> BlockEntityType<T> registerBlockEntityType(String name, Supplier<T> be, Block... blocks) {
-		return Registry.register(Registry.BLOCK_ENTITY, MODID + ":" + name, BlockEntityType.Builder.create(be, blocks).build(null));
+		return Registry.register(Registry.BLOCK_ENTITY_TYPE, MODID + ":" + name, BlockEntityType.Builder.create(be, blocks).build(null));
 	}
 }

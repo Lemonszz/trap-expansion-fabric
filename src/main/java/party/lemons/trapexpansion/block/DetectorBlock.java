@@ -42,13 +42,13 @@ public class DetectorBlock extends BlockWithEntity {
 
 	@Override
 	public int getWeakRedstonePower(BlockState state, BlockView blockView, BlockPos pos, Direction direction) {
-		return state.get(POWERED).booleanValue() && state.get(FACING) == direction ? 15 : 0;
+		return state.get(POWERED) && state.get(FACING) == direction ? 15 : 0;
 	}
 
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return this.getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
+		return this.getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite());
 	}
 
 	@Override
