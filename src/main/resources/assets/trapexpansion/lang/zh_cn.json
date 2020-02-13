@@ -1,0 +1,13 @@
+{
+	"trapexpansion.subtitle.spikeout": "尖刺的声响",
+	"block.trapexpansion.spike_trap": "尖刺陷阱",
+	"block.trapexpansion.powered_spike_trap": "动力尖刺陷阱",
+	"block.trapexpansion.slippery_stone": "滑石",
+	"block.trapexpansion.fan": "风扇",
+    "block.trapexpansion.analog_fan": "模拟风扇",
+	"block.trapexpansion.detector": "探测器",
+	"trapexpansion.tip.spiderproof": "防止蜘蛛攀爬",
+	"death.attack.trapexpansion.spike": "%1$s被穿成了一串!",
+	"death.attack.trapexpansion.spike.player": "%1$s被%2$s穿成了一串!",
+	"itemGroup.trapexpansion": "陷阱扩展"
+}
