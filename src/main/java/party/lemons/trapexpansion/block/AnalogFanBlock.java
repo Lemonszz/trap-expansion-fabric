@@ -25,11 +25,11 @@ public class AnalogFanBlock extends FanBlock {
 			int power = world.getReceivedRedstonePower(pos);
 			int upPower = world.getReceivedRedstonePower(pos.up());
 			if(upPower > power) power = upPower;
-			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
+			world.getBlockTickScheduler().schedule(pos, this, 0);
 			world.setBlockState(pos, state.with(POWER, power).with(POWERED, true));
 		} else {
 			if (state.get(POWER) > 0 || state.get(POWERED)) {
-				world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
+				world.getBlockTickScheduler().schedule(pos, this, 0);
 				world.setBlockState(pos, state.with(POWER, 0).with(POWERED, false));
 			}
 		}
@@ -41,7 +41,7 @@ public class AnalogFanBlock extends FanBlock {
 			int power = world.getReceivedRedstonePower(pos);
 			int upPower = world.getReceivedRedstonePower(pos.up());
 			if(upPower > power) power = upPower;
-			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
+			world.getBlockTickScheduler().schedule(pos, this, 0);
 			world.setBlockState(pos, state.with(POWER, power).with(POWERED, true));
 		}
 	}

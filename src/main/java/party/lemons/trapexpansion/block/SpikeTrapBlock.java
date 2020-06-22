@@ -1,9 +1,13 @@
 package party.lemons.trapexpansion.block;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityContext;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
@@ -23,8 +27,8 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 
 import party.lemons.trapexpansion.init.TrapExpansionSounds;
@@ -47,6 +51,9 @@ public class SpikeTrapBlock extends Block {
 	public SpikeTrapBlock(Settings settings) {
 		super(settings);
 		this.setDefaultState(this.getStateManager().getDefaultState().with(OUT, 0).with(FACING, Direction.UP).with(WATERLOGGED, false));
+
+		if(FabricLoader.getInstance().getEnvironmentType() != EnvType.SERVER)
+			BlockRenderLayerMap.INSTANCE.putBlock(this, RenderLayer.getCutout());
 	}
 
 	@Override
@@ -55,17 +62,38 @@ public class SpikeTrapBlock extends Block {
 	}
 
 	@Override
-	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState otherState, IWorld world, BlockPos pos, BlockPos otherPos) {
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
 		if (state.get(WATERLOGGED)) {
 			world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 
-		return super.getStateForNeighborUpdate(state, direction, otherState, world, pos, otherPos);
+		return super.getStateForNeighborUpdate(state, direction, newState, world, pos, posFrom);
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView bv, BlockPos pos, EntityContext ctx) {
-		return getCollisionShape(state, bv, pos, ctx);
+	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		switch (state.get(FACING)) {
+			case NORTH:
+				return AABB_NORTH;
+			case SOUTH:
+				return AABB_SOUTH;
+			case WEST:
+				return AABB_WEST;
+			case EAST:
+				return AABB_EAST;
+			case UP:
+				return AABB_UP;
+			case DOWN:
+				return AABB_DOWN;
+			default:
+				return AABB_UP;
+		}
+	}
+
+	@Override
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context)
+	{
+		return getCollisionShape(state, world, pos, context);
 	}
 
 	@Override
@@ -87,7 +115,7 @@ public class SpikeTrapBlock extends Block {
 	@Deprecated
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block otherBlock, BlockPos otherPos, boolean var6) {
-		world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
+		world.getBlockTickScheduler().schedule(pos, this, this.getTickRate());
 	}
 
 	@Deprecated
@@ -106,32 +134,11 @@ public class SpikeTrapBlock extends Block {
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moved) {
 		if (state.get(OUT) > 0 || world.isReceivingRedstonePower(pos))
-			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
+			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate());
 	}
 
-	@Override
-	public int getTickRate(WorldView view) {
+	public int getTickRate() {
 		return 5;
-	}
-
-	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockView view, BlockPos pos, EntityContext context) {
-		switch (state.get(FACING)) {
-			case NORTH:
-				return AABB_NORTH;
-			case SOUTH:
-				return AABB_SOUTH;
-			case WEST:
-				return AABB_WEST;
-			case EAST:
-				return AABB_EAST;
-			case UP:
-				return AABB_UP;
-			case DOWN:
-				return AABB_DOWN;
-			default:
-				return AABB_UP;
-		}
 	}
 
 	@Override
@@ -174,9 +181,9 @@ public class SpikeTrapBlock extends Block {
 		}
 
 		world.setBlockState(pos, state.with(OUT, endValue));
-		world.checkBlockRerender(pos, state, state.with(OUT, endValue));
+		world.scheduleBlockRerenderIfNeeded(pos, state, state.with(OUT, endValue));
 		if (endValue != 2 || !powered)
-			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
+			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate());
 	}
 
 	protected boolean hasEntity(World world, BlockPos pos, BlockState state) {

@@ -20,8 +20,8 @@ public class TrapExpansionBlocks {
 
 	public static void init() {
 		SLIPPERY_STONE = registerBlock(new SpiderProofBlock(Block.Settings.of(Material.STONE).strength(0.5F, 1.5F)), "slippery_stone");
-		SPIKE_TRAP = registerBlock(new SpikeTrapBlock(Block.Settings.of(Material.ANVIL).strength(0.5F, 1.5F)), "spike_trap");
-		POWERED_SPIKE_TRAP = registerBlock(new PoweredSpikeTrapBlock(Block.Settings.of(Material.ANVIL).strength(0.5F, 1.5F)), "powered_spike_trap");
+		SPIKE_TRAP = registerBlock(new SpikeTrapBlock(Block.Settings.of(Material.REPAIR_STATION).nonOpaque().strength(0.5F, 1.5F)), "spike_trap");
+		POWERED_SPIKE_TRAP = registerBlock(new PoweredSpikeTrapBlock(Block.Settings.of(Material.REPAIR_STATION).nonOpaque().strength(0.5F, 1.5F)), "powered_spike_trap");
 		FAN = registerBlock(new FanBlock(Block.Settings.of(Material.STONE).strength(0.5F, 1.5F)), "fan");
 		ANALOG_FAN = registerBlock(new AnalogFanBlock(Block.Settings.of(Material.STONE).strength(0.5F, 1.5F)), "analog_fan");
 		DETECTOR = registerBlock(new DetectorBlock(Block.Settings.of(Material.STONE).strength(0.5F, 1.5F)), "detector");

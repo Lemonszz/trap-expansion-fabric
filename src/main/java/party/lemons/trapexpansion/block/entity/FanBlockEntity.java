@@ -54,7 +54,7 @@ public class FanBlockEntity extends BlockEntity implements Tickable {
 					}
 				}
 
-				double distance = e.getPos().distanceTo(new Vec3d(pos));
+				double distance = e.getPos().distanceTo(new Vec3d(pos.getX(), pos.getY(), pos.getZ()));
 				float distanceDecay = Math.max(0, (float) ((range - distance) / (range * 8)));
 				float speed = SPEED;
 				if (facing == Direction.UP || facing == Direction.DOWN)

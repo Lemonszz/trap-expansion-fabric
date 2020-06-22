@@ -47,8 +47,8 @@ public class PoweredSpikeTrapBlock extends SpikeTrapBlock {
 		}
 
 		world.setBlockState(pos, state.with(OUT, endValue));
-		world.checkBlockRerender(pos, state, state.with(OUT, endValue));
+		world.scheduleBlockRerenderIfNeeded(pos, state, state.with(OUT, endValue));
 		if (endValue != 2 || !powered)
-			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
+			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate());
 	}
 }

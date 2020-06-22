@@ -52,11 +52,6 @@ public class DetectorBlock extends BlockWithEntity {
 	}
 
 	@Override
-	public boolean hasBlockEntity() {
-		return true;
-	}
-
-	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> st) {
 		st.add(FACING).add(POWERED);
 	}

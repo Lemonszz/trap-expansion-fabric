@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "trapexpansion",
-	"version": "1.3.1",
+	"version": "1.3.2",
 	"name": "Trap Expansion",
 	"description": "Trap Expansion Adds Some Vanilla Style Traps!",
 	"authors": [
@@ -13,7 +13,7 @@
 		"sources": "https://github.com/Lemonszz/trap-expansion-fabric",
 		"issues": "https://github.com/Lemonszz/trap-expansion-fabric/issues"
 	},
-	"license": "MIT License",
+	"license": "MIT",
 	"environment": "*",
 	"entrypoints": {
 		"main": [

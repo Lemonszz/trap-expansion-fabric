@@ -56,11 +56,11 @@ public class FanBlock extends BlockWithEntity {
 		boolean powered = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.up());
 
 		if (powered) {
-			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
+			world.getBlockTickScheduler().schedule(pos, this, 0);
 			world.setBlockState(pos, state.with(POWERED, true));
 		} else {
 			if (state.get(POWERED)) {
-				world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
+				world.getBlockTickScheduler().schedule(pos, this, 0);
 				world.setBlockState(pos, state.with(POWERED, false));
 			}
 		}
@@ -69,7 +69,7 @@ public class FanBlock extends BlockWithEntity {
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moved) {
 		if (world.isReceivingRedstonePower(pos)) {
-			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate(world));
+			world.getBlockTickScheduler().schedule(pos, this, 0);
 			world.setBlockState(pos, state.with(POWERED, true));
 		}
 	}
@@ -77,11 +77,6 @@ public class FanBlock extends BlockWithEntity {
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		return this.getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite());
-	}
-
-	@Override
-	public boolean hasBlockEntity() {
-		return true;
 	}
 
 	@Override
