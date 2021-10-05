@@ -7,6 +7,8 @@ import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.state.StateManager;
@@ -17,10 +19,10 @@ import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-
+import org.jetbrains.annotations.Nullable;
 import party.lemons.trapexpansion.block.entity.FanBlockEntity;
+import party.lemons.trapexpansion.init.TrapExpansionBlockEntities;
 
 import java.util.Random;
 
@@ -38,11 +40,11 @@ public class FanBlock extends BlockWithEntity {
 	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
 		if (state.get(POWERED) && random.nextInt(3) == 0) {
 			Direction facing = state.get(FACING);
-			double xPos = pos.offset(facing).getX() + random.nextFloat();
-			double yPos = pos.offset(facing).getY() + random.nextFloat();
-			double zPos = pos.offset(facing).getZ() + random.nextFloat();
+			double xPos = pos.offset(facing).getX() + (random.nextFloat() / 0.8f);
+			double yPos = pos.offset(facing).getY() + (random.nextFloat() / 0.8f);
+			double zPos = pos.offset(facing).getZ() + (random.nextFloat() / 0.8f);
 
-			world.addParticle(ParticleTypes.CLOUD, xPos, yPos, zPos, facing.getOffsetX() / 2F, facing.getOffsetY() / 2F, facing.getOffsetZ() / 2F);
+			world.addParticle(ParticleTypes.CLOUD, xPos, yPos, zPos, (facing.getOffsetX() / 24F) * getFanRange(state), (facing.getOffsetY() / 24F) * getFanRange(state), (facing.getOffsetZ() / 24F) * getFanRange(state));
 		}
 	}
 
@@ -85,8 +87,8 @@ public class FanBlock extends BlockWithEntity {
 	}
 
 	@Override
-	public BlockEntity createBlockEntity(BlockView view) {
-		return new FanBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new FanBlockEntity(pos, state);
 	}
 	
 	@Override
@@ -101,5 +103,10 @@ public class FanBlock extends BlockWithEntity {
 	
 	public double getFanRange(BlockState state) {
 		return 8.5;
+	}
+
+	@Nullable
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return checkType(type, TrapExpansionBlockEntities.FAN, FanBlockEntity::tick);
 	}
 }

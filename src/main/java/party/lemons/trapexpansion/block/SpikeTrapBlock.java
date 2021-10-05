@@ -29,8 +29,6 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
-import net.minecraft.world.WorldView;
-
 import party.lemons.trapexpansion.init.TrapExpansionSounds;
 import party.lemons.trapexpansion.misc.SpikeDamageSource;
 
@@ -43,9 +41,9 @@ public class SpikeTrapBlock extends Block {
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 	protected static final VoxelShape AABB_UP = VoxelShapes.cuboid(0.0D, 0.0D, 0.0D, 1.0D, 0.06D, 1.0D);
 	protected static final VoxelShape AABB_DOWN = VoxelShapes.cuboid(0.0D, 0.94D, 0.0D, 1.0D, 1.0D, 1.0D);
-	protected static final VoxelShape AABB_NORTH = VoxelShapes.cuboid(0.0D, 0.0D, 1.0D, 1.0D, 1.0D, 0.94D);
+	protected static final VoxelShape AABB_NORTH = VoxelShapes.cuboid(0.0D, 0.0D, 0.94D, 1.0D, 1.0D, 1.0D);
 	protected static final VoxelShape AABB_SOUTH = VoxelShapes.cuboid(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.06D);
-	protected static final VoxelShape AABB_WEST = VoxelShapes.cuboid(1.0D, 0.0D, 0.0D, 0.94D, 1.0D, 1.0D);
+	protected static final VoxelShape AABB_WEST = VoxelShapes.cuboid(0.94D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 	protected static final VoxelShape AABB_EAST = VoxelShapes.cuboid(0.0D, 0.0D, 0.0D, 0.06D, 1.0D, 1.0D);
 
 	public SpikeTrapBlock(Settings settings) {
@@ -81,8 +79,6 @@ public class SpikeTrapBlock extends Block {
 				return AABB_WEST;
 			case EAST:
 				return AABB_EAST;
-			case UP:
-				return AABB_UP;
 			case DOWN:
 				return AABB_DOWN;
 			default:
@@ -98,7 +94,7 @@ public class SpikeTrapBlock extends Block {
 
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-		if (!world.isClient && !entity.removed) {
+		if (!world.isClient && !entity.isRemoved()) {
 			int i = state.get(OUT);
 
 			if (i == 0) {
@@ -108,7 +104,6 @@ public class SpikeTrapBlock extends Block {
 			if (i == 2 && world.getTime() % 5 == 0) {
 				entity.damage(SpikeDamageSource.SPIKE, 3);
 			}
-
 		}
 	}
 
@@ -187,8 +182,7 @@ public class SpikeTrapBlock extends Block {
 	}
 
 	protected boolean hasEntity(World world, BlockPos pos, BlockState state) {
-		List<? extends Entity> list;
-		list = world.getEntities(Entity.class, new Box(0, 0, 0, 1, 1, 1).offset(pos), e -> true);
+		List<? extends Entity>  list = world.getEntitiesByClass(Entity.class, new Box(0, 0, 0, 1, 1, 1).offset(pos), e -> true);
 		if (!list.isEmpty()) {
 			for (Entity entity : list) {
 				if (!entity.canAvoidTraps()) {

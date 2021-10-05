@@ -3,49 +3,44 @@ package party.lemons.trapexpansion.block.entity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.Tickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import party.lemons.trapexpansion.block.DetectorBlock;
 import party.lemons.trapexpansion.init.TrapExpansionBlockEntities;
 
 import java.util.List;
 
-public class DetectorBlockEntity extends BlockEntity implements Tickable {
+public class DetectorBlockEntity extends BlockEntity {
 	private static final int STEP_TIME = 4;
 	private static final int RANGE = 5;
 
-	public DetectorBlockEntity() {
-		super(TrapExpansionBlockEntities.DETECTOR_BE);
+	public DetectorBlockEntity(BlockPos pos, BlockState state) {
+		super(TrapExpansionBlockEntities.DETECTOR, pos, state);
 	}
 
-
-	@Override
-	public void tick() {
+	public static void tick(World world, BlockPos pos, BlockState state, DetectorBlockEntity detector) {
 		if (world.getTime() % STEP_TIME == 0 && !world.isClient) {
-			BlockState state = world.getBlockState(pos);
-
 			if (!(state.getBlock() instanceof DetectorBlock))
 				return;
 
 			Direction facing = state.get(DetectorBlock.FACING);
 			Box bb = new Box(0, 0, 0, 1, 1, 1).offset(pos.offset(facing)).stretch(facing.getOffsetX() * RANGE, facing.getOffsetY() * RANGE, facing.getOffsetZ() * RANGE);
-			List<Entity> entities = world.getEntities(Entity.class, bb, e -> true);
+			List<Entity> entities = world.getEntitiesByClass(Entity.class, bb, e -> true);
 
 			int entityCount = entities.size();
 			boolean hasEntity = entityCount > 0;
 
 			if (hasEntity) {
-				for (int i = 0; i < entities.size(); i++) {
-					Entity e = entities.get(i);
-
-					int xCheck = facing.getOffsetX() * (MathHelper.floor(e.getX()) - this.pos.getX());
-					int yCheck = facing.getOffsetY() * (MathHelper.floor(e.getY()) - this.pos.getY());
-					int zCheck = facing.getOffsetZ() * (MathHelper.floor(e.getZ()) - this.pos.getZ());
+				for (Entity e : entities) {
+					int xCheck = facing.getOffsetX() * (MathHelper.floor(e.getX()) - pos.getX());
+					int yCheck = facing.getOffsetY() * (MathHelper.floor(e.getY()) - pos.getY());
+					int zCheck = facing.getOffsetZ() * (MathHelper.floor(e.getZ()) - pos.getZ());
 
 					for (int b = 1; b < Math.abs(xCheck + yCheck + zCheck); b++) {
-						if (world.getBlockState(this.pos.offset(facing, b)).isOpaque()) {
+						if (world.getBlockState(pos.offset(facing, b)).isOpaque()) {
 							entityCount--;
 							if (entityCount <= 0) {
 								hasEntity = false;

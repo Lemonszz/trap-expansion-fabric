@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "trapexpansion:spike_trap",
+    "trapexpansion:powered_spike_trap",
+    "trapexpansion:slippery_stone",
+    "trapexpansion:fan",
+    "trapexpansion:analog_fan",
+    "trapexpansion:detector"
+  ]
+}

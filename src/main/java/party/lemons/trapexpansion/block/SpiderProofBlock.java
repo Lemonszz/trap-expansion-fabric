@@ -40,12 +40,12 @@ public class SpiderProofBlock extends Block {
 
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void buildTooltip(ItemStack stack, BlockView world, List<Text> tooltip, TooltipContext context) {
+	public void appendTooltip(ItemStack stack, BlockView world, List<Text> tooltip, TooltipContext context) {
 		TranslatableText text = new TranslatableText("trapexpansion.tip.spiderproof");
 		text.setStyle(Style.EMPTY.withColor(Formatting.DARK_GRAY));
 
 		tooltip.add(text);
 
-		super.buildTooltip(stack, world, tooltip, context);
+		super.appendTooltip(stack, world, tooltip, context);
 	}
 }

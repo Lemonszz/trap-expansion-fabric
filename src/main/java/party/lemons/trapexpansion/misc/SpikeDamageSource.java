@@ -7,6 +7,6 @@ public class SpikeDamageSource extends DamageSource {
 	public static final SpikeDamageSource SPIKE = new SpikeDamageSource();
 
 	protected SpikeDamageSource() {
-		super(TrapExpansion.MODID + ".spike");
+		super(TrapExpansion.MOD_ID + ".spike");
 	}
 }

@@ -16,7 +16,7 @@ public class PoweredSpikeTrapBlock extends SpikeTrapBlock {
 
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-		if (!world.isClient && !entity.removed) {
+		if (!world.isClient && !entity.isRemoved()) {
 			int i = state.get(OUT);
 
 			if (i == 2 && world.getTime() % 5 == 0) {
