@@ -1,4 +1,4 @@
-package party.lemons.trapexpansion.block;
+package com.shnupbups.trapexpansion.block;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -6,8 +6,9 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import party.lemons.trapexpansion.init.TrapExpansionSounds;
-import party.lemons.trapexpansion.misc.SpikeDamageSource;
+
+import com.shnupbups.trapexpansion.init.TrapExpansionSounds;
+import com.shnupbups.trapexpansion.misc.SpikeDamageSource;
 
 public class PoweredSpikeTrapBlock extends SpikeTrapBlock {
 	public PoweredSpikeTrapBlock(Settings settings) {
@@ -49,6 +50,6 @@ public class PoweredSpikeTrapBlock extends SpikeTrapBlock {
 		world.setBlockState(pos, state.with(OUT, endValue));
 		world.scheduleBlockRerenderIfNeeded(pos, state, state.with(OUT, endValue));
 		if (endValue != 2 || !powered)
-			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate());
+			world.createAndScheduleBlockTick(pos, this, this.getTickRate());
 	}
 }

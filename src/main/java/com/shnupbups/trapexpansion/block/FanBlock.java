@@ -1,7 +1,9 @@
-package party.lemons.trapexpansion.block;
+package com.shnupbups.trapexpansion.block;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import java.util.Random;
+
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -20,11 +22,12 @@ import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-import party.lemons.trapexpansion.block.entity.FanBlockEntity;
-import party.lemons.trapexpansion.init.TrapExpansionBlockEntities;
 
-import java.util.Random;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import com.shnupbups.trapexpansion.block.entity.FanBlockEntity;
+import com.shnupbups.trapexpansion.init.TrapExpansionBlockEntities;
 
 public class FanBlock extends BlockWithEntity {
 	public static final BooleanProperty POWERED = Properties.POWERED;
@@ -58,11 +61,11 @@ public class FanBlock extends BlockWithEntity {
 		boolean powered = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.up());
 
 		if (powered) {
-			world.getBlockTickScheduler().schedule(pos, this, 0);
+			world.createAndScheduleBlockTick(pos, this, 0);
 			world.setBlockState(pos, state.with(POWERED, true));
 		} else {
 			if (state.get(POWERED)) {
-				world.getBlockTickScheduler().schedule(pos, this, 0);
+				world.createAndScheduleBlockTick(pos, this, 0);
 				world.setBlockState(pos, state.with(POWERED, false));
 			}
 		}
@@ -71,7 +74,7 @@ public class FanBlock extends BlockWithEntity {
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moved) {
 		if (world.isReceivingRedstonePower(pos)) {
-			world.getBlockTickScheduler().schedule(pos, this, 0);
+			world.createAndScheduleBlockTick(pos, this, 0);
 			world.setBlockState(pos, state.with(POWERED, true));
 		}
 	}
@@ -90,17 +93,17 @@ public class FanBlock extends BlockWithEntity {
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new FanBlockEntity(pos, state);
 	}
-	
+
 	@Override
 	public BlockState rotate(BlockState state, BlockRotation rotation) {
 		return state.with(FACING, rotation.rotate(state.get(FACING)));
 	}
-	
+
 	@Override
 	public BlockState mirror(BlockState state, BlockMirror mirror) {
 		return state.rotate(mirror.getRotation(state.get(FACING)));
 	}
-	
+
 	public double getFanRange(BlockState state) {
 		return 8.5;
 	}

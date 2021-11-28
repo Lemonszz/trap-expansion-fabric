@@ -1,4 +1,6 @@
-package party.lemons.trapexpansion.block.entity;
+package com.shnupbups.trapexpansion.block.entity;
+
+import java.util.List;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -8,10 +10,9 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import party.lemons.trapexpansion.block.DetectorBlock;
-import party.lemons.trapexpansion.init.TrapExpansionBlockEntities;
 
-import java.util.List;
+import com.shnupbups.trapexpansion.block.DetectorBlock;
+import com.shnupbups.trapexpansion.init.TrapExpansionBlockEntities;
 
 public class DetectorBlockEntity extends BlockEntity {
 	private static final int STEP_TIME = 4;

@@ -1,7 +1,7 @@
-package party.lemons.trapexpansion.block;
+package com.shnupbups.trapexpansion.block;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -19,7 +19,8 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import java.util.List;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public class SpiderProofBlock extends Block {
 	public SpiderProofBlock(Settings settings) {

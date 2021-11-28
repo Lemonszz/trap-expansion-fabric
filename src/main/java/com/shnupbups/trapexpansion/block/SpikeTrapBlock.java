@@ -1,8 +1,8 @@
-package party.lemons.trapexpansion.block;
+package com.shnupbups.trapexpansion.block;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.loader.api.FabricLoader;
+import java.util.List;
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -29,11 +29,13 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
-import party.lemons.trapexpansion.init.TrapExpansionSounds;
-import party.lemons.trapexpansion.misc.SpikeDamageSource;
 
-import java.util.List;
-import java.util.Random;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.loader.api.FabricLoader;
+
+import com.shnupbups.trapexpansion.init.TrapExpansionSounds;
+import com.shnupbups.trapexpansion.misc.SpikeDamageSource;
 
 public class SpikeTrapBlock extends Block {
 	public static final IntProperty OUT = IntProperty.of("out", 0, 2);
@@ -50,7 +52,7 @@ public class SpikeTrapBlock extends Block {
 		super(settings);
 		this.setDefaultState(this.getStateManager().getDefaultState().with(OUT, 0).with(FACING, Direction.UP).with(WATERLOGGED, false));
 
-		if(FabricLoader.getInstance().getEnvironmentType() != EnvType.SERVER)
+		if (FabricLoader.getInstance().getEnvironmentType() != EnvType.SERVER)
 			BlockRenderLayerMap.INSTANCE.putBlock(this, RenderLayer.getCutout());
 	}
 
@@ -62,7 +64,7 @@ public class SpikeTrapBlock extends Block {
 	@Override
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
 		if (state.get(WATERLOGGED)) {
-			world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+			world.createAndScheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 
 		return super.getStateForNeighborUpdate(state, direction, newState, world, pos, posFrom);
@@ -87,8 +89,7 @@ public class SpikeTrapBlock extends Block {
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context)
-	{
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		return getCollisionShape(state, world, pos, context);
 	}
 
@@ -110,7 +111,7 @@ public class SpikeTrapBlock extends Block {
 	@Deprecated
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block otherBlock, BlockPos otherPos, boolean var6) {
-		world.getBlockTickScheduler().schedule(pos, this, this.getTickRate());
+		world.createAndScheduleBlockTick(pos, this, this.getTickRate());
 	}
 
 	@Deprecated
@@ -129,7 +130,7 @@ public class SpikeTrapBlock extends Block {
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moved) {
 		if (state.get(OUT) > 0 || world.isReceivingRedstonePower(pos))
-			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate());
+			world.createAndScheduleBlockTick(pos, this, this.getTickRate());
 	}
 
 	public int getTickRate() {
@@ -178,11 +179,11 @@ public class SpikeTrapBlock extends Block {
 		world.setBlockState(pos, state.with(OUT, endValue));
 		world.scheduleBlockRerenderIfNeeded(pos, state, state.with(OUT, endValue));
 		if (endValue != 2 || !powered)
-			world.getBlockTickScheduler().schedule(pos, this, this.getTickRate());
+			world.createAndScheduleBlockTick(pos, this, this.getTickRate());
 	}
 
 	protected boolean hasEntity(World world, BlockPos pos, BlockState state) {
-		List<? extends Entity>  list = world.getEntitiesByClass(Entity.class, new Box(0, 0, 0, 1, 1, 1).offset(pos), e -> true);
+		List<? extends Entity> list = world.getEntitiesByClass(Entity.class, new Box(0, 0, 0, 1, 1, 1).offset(pos), e -> true);
 		if (!list.isEmpty()) {
 			for (Entity entity : list) {
 				if (!entity.canAvoidTraps()) {
@@ -197,12 +198,12 @@ public class SpikeTrapBlock extends Block {
 	protected void appendProperties(StateManager.Builder<Block, BlockState> st) {
 		st.add(OUT).add(FACING).add(WATERLOGGED);
 	}
-	
+
 	@Override
 	public BlockState rotate(BlockState state, BlockRotation rotation) {
 		return state.with(FACING, rotation.rotate(state.get(FACING)));
 	}
-	
+
 	@Override
 	public BlockState mirror(BlockState state, BlockMirror mirror) {
 		return state.rotate(mirror.getRotation(state.get(FACING)));

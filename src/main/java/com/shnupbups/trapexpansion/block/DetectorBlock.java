@@ -1,4 +1,6 @@
-package party.lemons.trapexpansion.block;
+package com.shnupbups.trapexpansion.block;
+
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -18,9 +20,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-import party.lemons.trapexpansion.block.entity.DetectorBlockEntity;
-import party.lemons.trapexpansion.init.TrapExpansionBlockEntities;
+
+import com.shnupbups.trapexpansion.block.entity.DetectorBlockEntity;
+import com.shnupbups.trapexpansion.init.TrapExpansionBlockEntities;
 
 public class DetectorBlock extends BlockWithEntity {
 	public static final BooleanProperty POWERED = Properties.POWERED;
@@ -65,12 +67,12 @@ public class DetectorBlock extends BlockWithEntity {
 	public BlockRenderType getRenderType(BlockState state) {
 		return BlockRenderType.MODEL;
 	}
-	
+
 	@Override
 	public BlockState rotate(BlockState state, BlockRotation rotation) {
 		return state.with(FACING, rotation.rotate(state.get(FACING)));
 	}
-	
+
 	@Override
 	public BlockState mirror(BlockState state, BlockMirror mirror) {
 		return state.rotate(mirror.getRotation(state.get(FACING)));
