@@ -1,14 +1,21 @@
-package party.lemons.trapexpansion.init;
+package com.shnupbups.trapexpansion.init;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.registry.Registry;
-import party.lemons.trapexpansion.TrapExpansion;
-import party.lemons.trapexpansion.block.*;
+
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+
+import com.shnupbups.trapexpansion.TrapExpansion;
+import com.shnupbups.trapexpansion.block.AnalogFanBlock;
+import com.shnupbups.trapexpansion.block.DetectorBlock;
+import com.shnupbups.trapexpansion.block.FanBlock;
+import com.shnupbups.trapexpansion.block.PoweredSpikeTrapBlock;
+import com.shnupbups.trapexpansion.block.SpiderProofBlock;
+import com.shnupbups.trapexpansion.block.SpikeTrapBlock;
 
 public class TrapExpansionBlocks {
 	public static Block SLIPPERY_STONE = new SpiderProofBlock(FabricBlockSettings.of(Material.STONE).strength(0.5F, 1.5F));

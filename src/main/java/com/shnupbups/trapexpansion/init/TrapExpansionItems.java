@@ -1,8 +1,9 @@
-package party.lemons.trapexpansion.init;
+package com.shnupbups.trapexpansion.init;
 
 import net.minecraft.item.Item;
 import net.minecraft.util.registry.Registry;
-import party.lemons.trapexpansion.TrapExpansion;
+
+import com.shnupbups.trapexpansion.TrapExpansion;
 
 public class TrapExpansionItems {
 	public static void init() {

@@ -1,8 +1,9 @@
-package party.lemons.trapexpansion.init;
+package com.shnupbups.trapexpansion.init;
 
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.registry.Registry;
-import party.lemons.trapexpansion.TrapExpansion;
+
+import com.shnupbups.trapexpansion.TrapExpansion;
 
 public class TrapExpansionSounds {
 	public static SoundEvent SOUND_SPIKE_1 = new SoundEvent(TrapExpansion.id("spike_out_1"));

@@ -1,12 +1,17 @@
-package party.lemons.trapexpansion.block.entity;
+package com.shnupbups.trapexpansion.block.entity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import party.lemons.trapexpansion.block.FanBlock;
-import party.lemons.trapexpansion.init.TrapExpansionBlockEntities;
+
+import com.shnupbups.trapexpansion.block.FanBlock;
+import com.shnupbups.trapexpansion.init.TrapExpansionBlockEntities;
 
 public class FanBlockEntity extends BlockEntity {
 	private static final int STEP_TIME = 1;

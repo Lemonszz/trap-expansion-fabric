@@ -11,7 +11,7 @@
 	],
 
 	"contact": {
-		"homepage": "https://minecraft.curseforge.com/projects/trap-expansion-fabric",
+		"homepage": "https://www.curseforge.com/minecraft/mc-mods/trap-expansion-fabric",
 		"sources": "https://github.com/Lemonszz/trap-expansion-fabric",
 		"issues": "https://github.com/Lemonszz/trap-expansion-fabric/issues"
 	},
@@ -21,7 +21,7 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"party.lemons.trapexpansion.TrapExpansion"
+			"com.shnupbups.trapexpansion.TrapExpansion"
 		]
 	},
 

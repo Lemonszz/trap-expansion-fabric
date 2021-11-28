@@ -1,7 +1,8 @@
-package party.lemons.trapexpansion.misc;
+package com.shnupbups.trapexpansion.misc;
 
 import net.minecraft.entity.damage.DamageSource;
-import party.lemons.trapexpansion.TrapExpansion;
+
+import com.shnupbups.trapexpansion.TrapExpansion;
 
 public class SpikeDamageSource extends DamageSource {
 	public static final SpikeDamageSource SPIKE = new SpikeDamageSource();
