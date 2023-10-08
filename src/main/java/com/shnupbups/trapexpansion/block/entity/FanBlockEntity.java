@@ -3,6 +3,7 @@ package com.shnupbups.trapexpansion.block.entity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
@@ -34,7 +35,7 @@ public class FanBlockEntity extends BlockEntity {
 
 			Box bb = new Box(0, 0, 0, 1, 1, 1).offset(pos.offset(facing)).stretch(facing.getOffsetX() * range, facing.getOffsetY() * range, facing.getOffsetZ() * range);
 
-			for (Entity e : world.getEntitiesByClass(Entity.class, bb, e -> true)) {
+			for (Entity e : world.getEntitiesByClass(Entity.class, bb, e -> !(e instanceof PlayerEntity player) || !player.isSpectator())) {
 				int xCheck = facing.getOffsetX() * (MathHelper.floor(e.getX()) - pos.getX());
 				int yCheck = facing.getOffsetY() * (MathHelper.floor(e.getY()) - pos.getY());
 				int zCheck = facing.getOffsetZ() * (MathHelper.floor(e.getZ()) - pos.getZ());
